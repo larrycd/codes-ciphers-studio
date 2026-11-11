@@ -11,7 +11,7 @@ param(
     [switch]$Open
 )
 $ErrorActionPreference = 'Stop'
-$Version = '1.0.2'
+$Version = '1.0.3'
 if (-not $Root) { $Root = Join-Path $PSScriptRoot 'app' }
 $Root = [System.IO.Path]::GetFullPath($Root)
 if (-not (Test-Path -LiteralPath (Join-Path $Root 'index.html'))) { throw "Codes & Ciphers Studio files not found in $Root" }
