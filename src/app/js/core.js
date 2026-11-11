@@ -3,7 +3,7 @@
 (function (G) {
 'use strict';
 var CC = G.CC = G.CC || {};
-CC.version = '1.0.2';
+CC.version = '1.0.3';
 CC.list = [];
 CC.byId = {};
 CC.chapters = {

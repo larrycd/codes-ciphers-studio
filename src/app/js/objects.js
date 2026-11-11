@@ -236,28 +236,55 @@ OBJ.rails = function (host, api) {
 
 /* ======================= columnar family: columns slide into key order ======================= */
 OBJ.columns = function (host, api) {
-  var box = CC.ui.mk(host, ''), sorted = false, id = api.def.id;
-  function layout() {
-    var k = api.keys(), key = CC.letters(k.key) || 'KEY', t = CC.letters(api.input()), C = key.length, R = Math.ceil(t.length / C), cells = [];
-    if (id === 'disrupted') { var d = CC.disruptGrid(t.length, key, t); for (var i = 0; i < R * C; i++) cells.push(d.grid[i] === undefined ? '' : t[d.grid[i]]); }
-    else { var pad = k.pad === 'x' ? 'X' : k.pad === 'random' ? '?' : ''; for (i = 0; i < R * C; i++) cells.push(t[i] || pad); }
-    return { key: key, C: C, R: R, cells: cells };
+  var box = CC.ui.mk(host, ''), id = api.def.id, step = 0;
+  /* the grids to show: one for single transpositions, two for the double one (the second is filled with the first one's result) */
+  function stages() {
+    var k = api.keys(), t = CC.letters(api.input()), key1 = CC.letters(k.key) || 'KEY', out = [];
+    var mk = function (key, text, pad) {
+      var C = key.length, R = Math.max(1, Math.ceil(text.length / C)), cells = [];
+      if (id === 'disrupted') { var d = CC.disruptGrid(text.length, key, text); for (var i = 0; i < R * C; i++) cells.push(d.grid[i] === undefined ? '' : text[d.grid[i]]); }
+      else { var pc = pad === 'x' ? 'X' : pad === 'random' ? '?' : ''; for (i = 0; i < R * C; i++) cells.push(text[i] || pc); }
+      var rank = CC.keyOrder(key), order = []; rank.forEach(function (rk, col) { order[rk] = col; });
+      var read = ''; order.forEach(function (col) { for (var r = 0; r < R; r++) { var v = cells[r * C + col]; if (v && v !== '?') read += v; } });
+      if (id === 'myszkowski') read = CC.byId.myszkowski.enc(text, { key: key, pad: 'blank' });
+      return { key: key, C: C, R: R, cells: cells, rank: rank, read: read };
+    };
+    out.push(mk(key1, t, k.pad));
+    if (id === 'double') out.push(mk(CC.letters(k.key2) || 'KEY', out[0].read.replace(/\?/g, ''), 'blank'));
+    return out;
   }
-  function draw() {
-    var L = layout(), cw = 30, ch = 28, W = L.C * cw + 20, H = (L.R + 2) * ch + 20, rank = CC.keyOrder(L.key);
-    var groups = id === 'myszkowski' ? (function () { var u = CC.dedupe(L.key.split('').sort().join('')); return L.key.split('').map(function (c) { return u.indexOf(c) + 1; }); })() : rank.map(function (r) { return r + 1; });
-    var h = '<svg viewBox="0 0 ' + Math.max(W, 300) + ' ' + H + '" width="' + Math.max(W, 300) + '">';
+  function grid(L, sorted, title) {
+    var cw = 30, ch = 28, top = 46, W = Math.max(L.C * cw + 20, 220), H = top + L.R * ch + 10;
+    var groups = id === 'myszkowski' ? (function () { var u = CC.dedupe(L.key.split('').sort().join('')); return L.key.split('').map(function (c) { return u.indexOf(c) + 1; }); })() : L.rank.map(function (r) { return r + 1; });
+    var h = '<div style="text-align:center;margin:4px 10px"><div class="hint">' + title + '</div><svg viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '">';
     for (var c = 0; c < L.C; c++) {
-      var x = 10 + (sorted && id !== 'myszkowski' ? rank[c] : c) * cw;
+      var x = 10 + (sorted && id !== 'myszkowski' ? L.rank[c] : c) * cw;
       h += '<g style="transition:transform .9s ease;transform:translateX(' + x + 'px)"><rect x="0" y="0" width="' + (cw - 2) + '" height="' + ch + '" rx="4" fill="#4a3f12"/><text x="' + (cw / 2 - 1) + '" y="19" text-anchor="middle" fill="#ffd75e" font-family="Consolas" font-size="16" font-weight="bold">' + L.key[c] + '</text>' +
-        '<text x="' + (cw / 2 - 1) + '" y="' + (ch + 16) + '" text-anchor="middle" fill="#97a3a0" font-family="Consolas" font-size="11">' + groups[c] + '</text>';
-      for (var r = 0; r < L.R; r++) { var v = L.cells[r * L.C + c]; h += '<rect x="0" y="' + ((r + 1) * ch + 12) + '" width="' + (cw - 2) + '" height="' + (ch - 2) + '" fill="' + (v ? '#1e2526' : '#101414') + '"/><text x="' + (cw / 2 - 1) + '" y="' + ((r + 1) * ch + 31) + '" text-anchor="middle" fill="#edf0ee" font-family="Consolas" font-size="15">' + v + '</text>'; }
+        '<text x="' + (cw / 2 - 1) + '" y="' + (ch + 13) + '" text-anchor="middle" fill="#97a3a0" font-family="Consolas" font-size="11">' + groups[c] + '</text>';
+      for (var r = 0; r < L.R; r++) { var v = L.cells[r * L.C + c]; h += '<rect x="0" y="' + (top + r * ch) + '" width="' + (cw - 2) + '" height="' + (ch - 2) + '" fill="' + (v ? '#1e2526' : '#101414') + '"/><text x="' + (cw / 2 - 1) + '" y="' + (top + r * ch + 19) + '" text-anchor="middle" fill="' + (v === '?' ? '#4fb38a' : '#edf0ee') + '" font-family="Consolas" font-size="15">' + v + '</text>'; }
       h += '</g>';
     }
-    box.innerHTML = h + '</svg><div class="hint" style="text-align:center">' + (id === 'myszkowski' ? 'Columns with the same number are read together, row by row.' : id === 'disrupted' ? 'Writing jumps to a new row after any letter that is in the keyword; leftovers fill the gaps.' : 'The numbers show the alphabetical order of the keyword letters. ' + (sorted ? 'Columns sorted: read down each column, left to right.' : 'Press "Sort the columns" to see them move.')) + (id === 'double' ? ' (First keyword shown; the second transposition is applied to the result.)' : '') + '</div>';
+    h += '</svg>';
+    if (sorted || id === 'myszkowski') h += '<div class="out" style="font-size:13px;min-height:auto;padding:4px 8px;max-width:' + Math.max(W, 220) + 'px;margin:4px auto">' + (L.read || '&nbsp;') + '</div>';
+    return h + '</div>';
   }
-  CC.ui.mk(host, '<div class="ctl noprint"><button class="b p" id="csort">Sort the columns</button></div>').onclick = function (e) { if (e.target.id === 'csort') { sorted = !sorted; draw(); e.target.textContent = sorted ? 'Put the columns back' : 'Sort the columns'; } };
-  return { refresh: function () { sorted = false; var b = host.querySelector('#csort'); if (b) b.textContent = 'Sort the columns'; draw(); } };
+  function draw() {
+    var S = stages(), h = '<div style="display:flex;flex-direction:column;align-items:center;gap:2px">', maxStep = S.length * 2 - 1;
+    S.forEach(function (L, i) {
+      var shown = step >= i * 2, sorted = step >= i * 2 + 1;
+      if (!shown) return;
+      var title = id === 'double' ? (i === 0 ? 'Step 1: first keyword ' : 'Step 2: second keyword ') + L.key + (i === 1 ? ' (filled with the result of step 1)' : '') : 'Keyword ' + L.key;
+      if (i > 0) h += '<div style="font-size:26px;color:#c9a227">&darr;</div>';
+      h += grid(L, sorted, title + (sorted && id !== 'myszkowski' ? ': columns sorted, read down each' : ''));
+    });
+    var btn = host.querySelector('#csort');
+    if (btn) btn.textContent = step >= maxStep ? 'Start again' : step % 2 === 0 ? 'Sort the columns' : 'Write the result into the second keyword';
+    box.innerHTML = h + '</div><div class="hint" style="text-align:center">' + (id === 'myszkowski' ? 'Columns with the same number are read together, row by row; the box shows the result.' : id === 'disrupted' ? 'Writing jumps to a new row after any letter that is in the keyword; leftovers fill the gaps. Then the columns are read in keyword order.' : 'The numbers show the alphabetical order of the keyword letters.' + (id === 'double' ? ' The result of step 1 is written row by row under the second keyword and transposed again.' : '')) + ' Green ? marks a filler letter.</div>';
+  }
+  var ctl = CC.ui.mk(host, '<div class="ctl noprint"><button class="b p" id="csort">Sort the columns</button></div>');
+  ctl.onclick = function (e) { if (e.target.id !== 'csort') return; var max = stages().length * 2 - 1; step = step >= max ? 0 : step + 1; draw(); };
+  if (id === 'myszkowski') ctl.style.display = 'none';
+  return { refresh: function () { step = id === 'myszkowski' ? 1 : 0; draw(); } };
 };
 
 /* ======================= route grid ======================= */
