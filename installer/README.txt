@@ -1,4 +1,4 @@
-Codes & Ciphers Studio 1.0.2 - by Larry Dalton
+Codes & Ciphers Studio 1.0.3 - by Larry Dalton
 
 62 working codes, ciphers and ways of hiding a message, following the chapters of
 Sunil Tanna's "Codes, Ciphers, Steganography & Secret Messages".

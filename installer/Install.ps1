@@ -12,7 +12,7 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 $Port = 8771
-$Version = '1.0.2'
+$Version = '1.0.3'
 $ResultFile = Join-Path $env:TEMP 'CodesCiphersStudio-install-result.txt'
 if (-not $Source) { $Source = Join-Path $PSScriptRoot 'payload' }
 $App = Join-Path $env:LOCALAPPDATA 'CodesCiphersStudio'
