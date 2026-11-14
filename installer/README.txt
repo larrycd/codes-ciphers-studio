@@ -1,7 +1,7 @@
-Codes & Ciphers Studio 1.3.0 - by Larry Dalton
+Codes & Ciphers Studio 1.3.1 - by Larry Dalton
 
-100 working codes, ciphers and ways of hiding a message, following the chapters of
-Sunil Tanna's "Codes, Ciphers, Steganography & Secret Messages", plus cipher wheels and devices.
+The most renowned codes, ciphers, secret messages and ways of hiding a message (steganography):
+100 of them, working, in 16 sections, from the Spartan scytale to Enigma, PURPLE and modern stream ciphers.
 - Working models: cipher wheel, Alberti disk, scytale, Enigma (I, M3, M4), Lorenz SZ42,
   Hagelin M-209, turning grille, semaphore, Chappe telegraph, Cooke & Wheatstone needles,
   signal flags, Morse lamp and key, punched tape and more
@@ -16,7 +16,7 @@ Sunil Tanna's "Codes, Ciphers, Steganography & Secret Messages", plus cipher whe
 - Codebreaker: letter counts, Caesar, Vigenere and substitution solvers, crib dragging
 - Famous cryptograms: Beale cipher no. 2 and the RSA-129 "Squeamish Ossifrage" message
 - Hide messages in text, typefaces and pictures
-- Self-test page checks the book's worked examples and standard test messages
+- Self-test page checks classic worked examples and standard test messages
 
 Install: extract this folder, then double-click Install.cmd.
 The studio installs for your Windows account only (no administrator rights), runs at http://localhost:8771/
