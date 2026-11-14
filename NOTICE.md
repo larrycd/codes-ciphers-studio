@@ -10,3 +10,18 @@ Codes & Ciphers Studio is by Larry Dalton.
   via the char-rnn "tinyshakespeare" file) and the Declaration of Independence.
 - AES, ECDSA and SHA use the browser's built-in Web Crypto.
 - The RSA-129 numbers and message are from Martin Gardner's 1977 Scientific American challenge and its 1994 solution.
+
+Added in version 1.1:
+
+- Fonts in `src/app/fonts`, cut down to the signs the cipher wheels use and renamed (as the SIL Open Font License
+  requires for modified versions); licence texts in `src/app/licenses`:
+  - `CCRunic.ttf` from Noto Sans Runic and `CCOgham.ttf` from Noto Sans Ogham, Copyright 2022 The Noto Project Authors, SIL OFL 1.1.
+  - `CCTengwar.otf` from Alcarin Tengwar, Copyright (c) 2022 Toshi Omagari, SIL OFL 1.1 (Reserved Font Name: Alcarin).
+    Tengwar is J.R.R. Tolkien's invented script; the studio is not associated with the Tolkien Estate.
+  - `CCHiero.ttf` from NewGardiner, Copyright (c) 2020 Mark-Jan Nederhof, SIL OFL 1.1 (Reserved Font Name: NewGardiner).
+  - `CCTheban.otf`: Theban letter outlines from Wikimedia Commons ("Theban glyph" files by User:Fuzzypeg), public domain.
+- M-94 disk alphabets: the M-94 identification matrix courtesy of George Mace, as published at jproc.ca.
+- Test examples: ADFGVX and Hill (Wikipedia), Chaocipher (Moshe Rubin, 2010), Solitaire (Bruce Schneier's published
+  test vectors), Mexican Army wheel (dCode).
+- The Janelle cipher, Enigma slide cipher and the modern Heath's deciphering dice are products of Creative Crafthouse;
+  the studio describes how such devices work and draws its own models. No product artwork is copied.
