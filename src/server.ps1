@@ -11,7 +11,7 @@ param(
     [switch]$Open
 )
 $ErrorActionPreference = 'Stop'
-$Version = '1.0.3'
+$Version = '1.1.0'
 if (-not $Root) { $Root = Join-Path $PSScriptRoot 'app' }
 $Root = [System.IO.Path]::GetFullPath($Root)
 if (-not (Test-Path -LiteralPath (Join-Path $Root 'index.html'))) { throw "Codes & Ciphers Studio files not found in $Root" }
@@ -19,7 +19,7 @@ if (-not (Test-Path -LiteralPath (Join-Path $Root 'index.html'))) { throw "Codes
 $Mime = @{
     '.html' = 'text/html; charset=utf-8'; '.js' = 'application/javascript; charset=utf-8'; '.json' = 'application/json; charset=utf-8'
     '.tsv' = 'text/plain; charset=utf-8'; '.txt' = 'text/plain; charset=utf-8'; '.css' = 'text/css; charset=utf-8'
-    '.svg' = 'image/svg+xml'; '.png' = 'image/png'; '.ico' = 'image/x-icon'; '.ttf' = 'font/ttf'; '.md' = 'text/plain; charset=utf-8'
+    '.svg' = 'image/svg+xml'; '.png' = 'image/png'; '.ico' = 'image/x-icon'; '.ttf' = 'font/ttf'; '.otf' = 'font/otf'; '.md' = 'text/plain; charset=utf-8'
 }
 
 function Send-Bytes {
