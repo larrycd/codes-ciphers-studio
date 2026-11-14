@@ -1,6 +1,6 @@
-Codes & Ciphers Studio 1.1.0 - by Larry Dalton
+Codes & Ciphers Studio 1.2.0 - by Larry Dalton
 
-78 working codes, ciphers and ways of hiding a message, following the chapters of
+89 working codes, ciphers and ways of hiding a message, following the chapters of
 Sunil Tanna's "Codes, Ciphers, Steganography & Secret Messages", plus cipher wheels and devices.
 - Working models: cipher wheel, Alberti disk, scytale, Enigma (I, M3, M4), Lorenz SZ42,
   Hagelin M-209, turning grille, semaphore, Chappe telegraph, Cooke & Wheatstone needles,
@@ -8,6 +8,8 @@ Sunil Tanna's "Codes, Ciphers, Steganography & Secret Messages", plus cipher whe
 - New in 1.1: Mexican Army and Janelle number wheels, Jefferson/M-94 cylinder, Enigma slide,
   Confederate disk, Heath's dice, Chaocipher, Solitaire (pack of cards), ADFGVX, Hill, and
   Braille, runes, Elvish (Tengwar), hieroglyph, Ogham and Theban cipher wheels
+- New in 1.2: PURPLE (with the real 7 December 1941 message), SIGABA, the VIC spy cipher and straddling
+  checkerboard, A5/1, RC4, Crypto-1, Salsa20, Trivium, the affine cipher and Diffie-Hellman key exchange
 - Encipher and decipher everything from Caesar to AES; RSA key pairs; signatures
 - Codebreaker: letter counts, Caesar, Vigenere and substitution solvers, crib dragging
 - Famous cryptograms: Beale cipher no. 2 and the RSA-129 "Squeamish Ossifrage" message
