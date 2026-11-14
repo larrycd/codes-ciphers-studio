@@ -18,7 +18,7 @@ function check(name, ok, info) { if (ok) pass++; else fail++; lines.push((ok ? '
       } catch (e) { check(d.id + ' vector', false, e.message); }
     }
     // round trip on the sample
-    if (['pigpen', 'imagestego', 'hash', 'heath'].includes(d.id)) continue;
+    if (['pigpen', 'imagestego', 'hash', 'heath', 'dh'].includes(d.id)) continue;
     try {
       const k = Object.assign({}, def);
       if (d.id === 'otp') k.key = CC.randLetters(200);
@@ -46,6 +46,8 @@ function check(name, ok, info) { if (ok) pass++; else fail++; lines.push((ok ? '
   // extra checks
   { const t = CC.heathTotal([483, 840, 756, 168, 971]); check('heath dice: quick rule gives the true total for the photo roll', t.quick === 3218 && t.real === 3218); }
   { let ok = true, n = 0; const F = CC.heath.faces; for (const a of F[0]) for (const b of F[1]) for (const c of F[2]) for (const d of F[3]) for (const e of F[4]) { const t = CC.heathTotal([a, b, c, d, e]); n++; if (t.quick !== t.real) ok = false; } check('heath dice: the quick rule is right for all ' + n + ' rolls', ok); }
+  (CC.extraChecks || []).forEach(c => { let ok = false; try { ok = c.fn(); } catch (e) { } check(c.name, ok); });
+  { const P = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', 'app', 'data', 'purple14.json'), 'utf8')); check('purple: part 1 of the 14-part message deciphers exactly as published', CC.byId.purple.dec(P.ct, P.key) === P.pt); }
   check('rsa129 squeamish ossifrage', CC.rsa129Solve() === 'THE MAGIC WORDS ARE SQUEAMISH OSSIFRAGE');
   const words = CC.bookWords(CC.beale.doi), dec = CC.beale.beale2.map(n => words[n - 1][0].toUpperCase()).join('');
   const sol = CC.letters(CC.beale.solution); const L = Array(sol.length + 1).fill(0);

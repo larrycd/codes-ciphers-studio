@@ -29,7 +29,7 @@ const { chromium } = require('playwright');
         if (!parts.slice(0, -1).every(x => [...x].length === +n) || [...parts[parts.length - 1]].length > +n) fail(id, 'groups of ' + n + ' not shown: "' + shown.slice(0, 40) + '"');
       }
       if (n !== '0' && !groupable && !note1) fail(id, 'groups ' + n + ' not applied and no explanation shown');
-      if (/^(pigpen|hash|heath)$/.test(id)) continue;
+      if (/^(pigpen|hash|heath|dh)$/.test(id)) continue;
       await p.click('#swap'); await p.click('#dec'); await p.waitForTimeout(id === 'aes' ? 900 : 40);
       const back = await p.textContent('#out'), note2 = await p.innerHTML('#msg');
       checks++;
@@ -40,6 +40,7 @@ const { chromium } = require('playwright');
         (id === 'nomenclator' && got.replace(/U/g, 'V') === want.replace(/U/g, 'V').replace(/J/g, 'I')) ||
         (id === 'ogham' && got === want.replace(/[0-9]/g, '').replace(/[JKVWXY]/g, c => ({ J: 'I', K: 'C', V: 'F', W: 'U', X: 'CS', Y: 'I' })[c])) ||
         (id === 'theban' && got === want.replace(/[0-9]/g, '').replace(/[JUW]/g, c => ({ J: 'I', U: 'V', W: 'VV' })[c])) ||
+        (id === 'sigaba' && got === want.replace(/[0-9]/g, '').replace(/Z/g, 'X')) ||
         (id === 'tapcode' && got === want.replace(/K/g, 'C')) || (/avgad|albam/.test(id) && got === want.replace(/ם/g, 'מ'));
       if (!ok) fail(id, 'groups ' + n + ': "' + sample + '" -> "' + shown.slice(0, 40) + '" -> "' + back.slice(0, 40) + '" ' + note2);
       if (/class="err"/.test(note2)) fail(id, 'error shown: ' + note2);

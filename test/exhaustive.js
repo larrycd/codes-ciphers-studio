@@ -42,6 +42,9 @@ function expected(d, m, k) {
   if (d.id === 'baudot' || d.id === 'cooke') e = e.replace(/[0-9]/g, '');
   if (d.id === 'semaphore' || d.id === 'chappe') e = e.replace(/[^A-Z0-9]/g, '');
   if (d.id === 'adfgvx' && k.variant === 'ADFGX') e = letters(m).replace(/J/g, 'I');
+  if (d.id === 'sigaba') e = letters(m).replace(/Z/g, 'X');
+  if (d.id === 'purple') e = letters(m);
+  if (/^(checkerboard|vic)$/.test(d.id)) e = norm(m);
   if (d.id === 'ogham') e = letters(m).replace(/[JKVWXY]/g, c => ({ J: 'I', K: 'C', V: 'F', W: 'U', X: 'CS', Y: 'I' })[c]);
   if (d.id === 'theban') e = letters(m).replace(/[JUW]/g, c => ({ J: 'I', U: 'V', W: 'VV' })[c]);
   if (/^(runes|tengwar|pharaoh|csa|jefferson|mexican|hill|chaocipher|solitaire)$/.test(d.id)) e = letters(m);
@@ -60,9 +63,9 @@ function compare(d, e, got, k) {
   return g === e || g === digitsDropped || g === e.replace(/\+/g, '');
 }
 (async () => {
-  let runs = 0, pass = 0, refused = 0, ambiguous = 0; const fails = {};
+  let runs = 0, pass = 0, refused = 0, ambiguous = 0; const fails = {}, refusedBy = {};
   for (const d of CC.list) {
-    if (/^(pigpen|imagestego|hash|heath)$/.test(d.id)) continue;
+    if (/^(pigpen|imagestego|hash|heath|dh)$/.test(d.id)) continue;
     let vs = variants(d).concat(extra[d.id] || []);
     if (d.id === 'rsa') { const kp = CC.rsaGenerate(512); vs = [{ n: kp.n.toString(), e: '65537', d: kp.d.toString() }]; }
     for (const k0 of vs) for (const m of MSGS) for (const n of [0, 3, 4, 5]) {
@@ -71,7 +74,7 @@ function compare(d, e, got, k) {
       runs++;
       let c, shown, p;
       try { c = await d.enc(m, k); }
-      catch (e) { if (/needs at least|runs out|too long|shorter than|The key is|cannot be undone/.test(e.message)) { refused++; pass++; continue; } (fails[d.id] = fails[d.id] || []).push('enc threw ' + e.message + ' ' + JSON.stringify(k) + ' ' + m); continue; }
+      catch (e) { if (/needs at least|runs out|too long|shorter than|The key is|cannot be undone|hexadecimal|Switch setting|rotor numbers|needs at least 20|top row|date needs|keygroup is|plugboard alphabet|must be whole|lower rows|column numbers|letters\.|digits\./.test(e.message)) { refused++; pass++; refusedBy[d.id] = (refusedBy[d.id] || 0) + 1; if (!/runs out|too long|shorter than|needs at least \d/.test(e.message) && JSON.stringify(k) === JSON.stringify(Object.fromEntries(d.keys.map(x => [x.id, x.def])))) (fails[d.id] = fails[d.id] || []).push('default key refused: ' + e.message); continue; } (fails[d.id] = fails[d.id] || []).push('enc threw ' + e.message + ' ' + JSON.stringify(k) + ' ' + m); continue; }
       shown = CC.groupOut(c, d, n, k).text;
       try { p = await d.dec(shown, k); } catch (e) { (fails[d.id] = fails[d.id] || []).push('dec threw ' + e.message); continue; }
       const e = expected(d, m, k);
@@ -82,8 +85,9 @@ function compare(d, e, got, k) {
   }
   // Hebrew round trips
   for (const id of ['avgad', 'albam']) for (const n of [0, 3, 4, 5]) { const d = CC.byId[id], m = 'שלומ עליכמ', k = { alpha: 'heb' }; runs++; const p = d.dec(CC.groupOut(d.enc(m, k), d, n, k).text, k); if (p.replace(/\s/g, '') === m.replace(/\s/g, '')) pass++; else (fails[id] = fails[id] || []).push('hebrew ' + n + ' ' + p); }
+  if (process.env.SHOW_REFUSED) console.log(refusedBy);
   const ids = Object.keys(fails);
-  console.log(`${runs} round trips over ${CC.list.length - 3} codes and ciphers: ${pass} passed${refused ? ' (' + refused + ' correctly refused: message too long for the cover text or book, or a key that cannot work, such as a Hill key that cannot be undone)' : ''}${ambiguous ? ', ' + ambiguous + ' disrupted-transposition results where several messages give the same ciphertext (reported to the user, and the answer shown re-enciphers exactly)' : ''}, ${runs - pass} failed`);
+  console.log(`${runs} round trips over ${CC.list.length - 3} codes and ciphers: ${pass} passed${refused ? ' (' + refused + ' correctly refused: a message too long for its cover text or book, or a key that cannot work, such as a word where hexadecimal digits are needed or a Hill key that cannot be undone)' : ''}${ambiguous ? ', ' + ambiguous + ' disrupted-transposition results where several messages give the same ciphertext (reported to the user, and the answer shown re-enciphers exactly)' : ''}, ${runs - pass} failed`);
   ids.forEach(id => { console.log('\n' + id + ' (' + fails[id].length + ')'); fails[id].slice(0, 4).forEach(f => console.log('   ' + f)); });
   process.exit(ids.length ? 1 : 0);
 })();

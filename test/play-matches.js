@@ -3,7 +3,7 @@ const { chromium } = require('playwright');
 (async () => {
   const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1366, height: 900 } }); await p.goto('http://localhost:8771/'); await p.waitForTimeout(900);
   const norm = s => String(s).toUpperCase().replace(/[^A-Z0-9א-ת]/g, '');
-  const ids = ['caesar', 'rot13', 'rot5', 'rot18', 'rot47', 'avgad', 'albam', 'atbash', 'keyword', 'playfair', 'twosquare', 'foursquare', 'alberti', 'm209', 'polybius', 'baudot', 'ita2', 'trithemius', 'vigenere', 'beaufort', 'varbeaufort', 'autokey', 'runningkey', 'braille', 'runes', 'tengwar', 'pharaoh', 'ogham', 'theban', 'csa', 'slide', 'jefferson', 'hill', 'chaocipher'];
+  const ids = ['caesar', 'rot13', 'rot5', 'rot18', 'rot47', 'avgad', 'albam', 'atbash', 'keyword', 'playfair', 'twosquare', 'foursquare', 'alberti', 'm209', 'polybius', 'baudot', 'ita2', 'trithemius', 'vigenere', 'beaufort', 'varbeaufort', 'autokey', 'runningkey', 'braille', 'runes', 'tengwar', 'pharaoh', 'ogham', 'theban', 'csa', 'slide', 'jefferson', 'hill', 'chaocipher', 'affine', 'sigaba', 'purple'];
   for (const id of ids) {
     await p.evaluate(id => CC.open(id), id);
     await p.evaluate(id => { const d = CC.byId[id]; const i = document.querySelector('#inp'); i.value = d.sample; i.dispatchEvent(new Event('input')); }, id);

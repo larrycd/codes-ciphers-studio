@@ -2,7 +2,7 @@
 const fs = require('fs'), path = require('path'), vm = require('vm');
 const APP = path.join(__dirname, '..', 'app');
 module.exports = function () {
-  for (const f of ['core.js', 'trans.js', 'poly.js', 'misc.js', 'devices.js']) vm.runInThisContext(fs.readFileSync(path.join(APP, 'js', f), 'utf8'), { filename: f });
+  for (const f of ['core.js', 'trans.js', 'poly.js', 'misc.js', 'devices.js', 'devices2.js']) vm.runInThisContext(fs.readFileSync(path.join(APP, 'js', f), 'utf8'), { filename: f });
   const CC = globalThis.CC;
   const b = JSON.parse(fs.readFileSync(path.join(APP, 'data', 'beale.json'), 'utf8'));
   CC.book.text = b.doi; CC.beale = b;
