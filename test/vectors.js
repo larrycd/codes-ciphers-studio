@@ -9,7 +9,7 @@ function check(name, ok, info) { if (ok) pass++; else fail++; lines.push((ok ? '
     const def = {}; d.keys.forEach(k => def[k.id] = k.def);
     for (const v of d.vectors || []) {
       const k = Object.assign({}, def, v.k);
-      const textual = /ascii|polybius|tapcode|morse|baudot|ita2|hash|bacon/.test(d.id);
+      const textual = /ascii|polybius|tapcode|morse|baudot|ita2|hash|bacon|braille/.test(d.id);
       const cmp = textual ? exact : norm;
       try {
         if (v.dir !== 'dec') { const c = await d.enc(v.p, k); check(d.id + ' enc ' + (v.src || ''), cmp(c) === cmp(v.c), cmp(c) === cmp(v.c) ? '' : 'got ' + c + ' want ' + v.c); }
@@ -18,7 +18,7 @@ function check(name, ok, info) { if (ok) pass++; else fail++; lines.push((ok ? '
       } catch (e) { check(d.id + ' vector', false, e.message); }
     }
     // round trip on the sample
-    if (['pigpen', 'imagestego', 'hash'].includes(d.id)) continue;
+    if (['pigpen', 'imagestego', 'hash', 'heath'].includes(d.id)) continue;
     try {
       const k = Object.assign({}, def);
       if (d.id === 'otp') k.key = CC.randLetters(200);
@@ -36,11 +36,16 @@ function check(name, ok, info) { if (ok) pass++; else fail++; lines.push((ok ? '
       else if (d.id === 'playfair') ok = norm(p).replace(/X/g, '') === norm(want).replace(/X/g, '');
       else if (['twosquare', 'foursquare'].includes(d.id)) ok = norm(p).startsWith(norm(want));
       else if (d.id === 'bacon') ok = norm(p).startsWith(norm(want));
+      else if (['hill', 'solitaire'].includes(d.id)) ok = /^X*$/.test(norm(p).slice(norm(want).length)) && norm(p).startsWith(norm(want));
+      else if (d.id === 'ogham') ok = norm(p) === norm(want).replace(/[JKVWXY]/g, c => ({ J: 'I', K: 'C', V: 'F', W: 'U', X: 'CS', Y: 'I' })[c]);
+      else if (d.id === 'theban') ok = norm(p) === norm(want).replace(/[JUW]/g, c => ({ J: 'I', U: 'V', W: 'VV' })[c]);
       else ok = norm(p) === norm(want);
       check(d.id + ' round trip', ok, ok ? '' : JSON.stringify({ c: String(c).slice(0, 80), p }));
     } catch (e) { check(d.id + ' round trip', false, e.message); }
   }
   // extra checks
+  { const t = CC.heathTotal([483, 840, 756, 168, 971]); check('heath dice: quick rule gives the true total for the photo roll', t.quick === 3218 && t.real === 3218); }
+  { let ok = true, n = 0; const F = CC.heath.faces; for (const a of F[0]) for (const b of F[1]) for (const c of F[2]) for (const d of F[3]) for (const e of F[4]) { const t = CC.heathTotal([a, b, c, d, e]); n++; if (t.quick !== t.real) ok = false; } check('heath dice: the quick rule is right for all ' + n + ' rolls', ok); }
   check('rsa129 squeamish ossifrage', CC.rsa129Solve() === 'THE MAGIC WORDS ARE SQUEAMISH OSSIFRAGE');
   const words = CC.bookWords(CC.beale.doi), dec = CC.beale.beale2.map(n => words[n - 1][0].toUpperCase()).join('');
   const sol = CC.letters(CC.beale.solution); const L = Array(sol.length + 1).fill(0);
