@@ -247,19 +247,19 @@ OBJ.crypto1 = function (host, api) {
 
 /* ======================= Salsa20: the 4 x 4 grid through its rounds ======================= */
 OBJ.salsa = function (host, api) {
-  var box = CC.ui.mk(host, ''), trace = [];
-  function build() { trace = []; try { var k = api.keys(); CC.salsaBlock(CC.hexKey(k.key, [16, 32], 'key'), CC.hexKey(k.nonce, [8], 'nonce'), 0, trace); } catch (e) { trace = []; } }
+  var box = CC.ui.mk(host, ''), trace = [], cha = api.def.id === 'chacha20';
+  function build() { trace = []; try { var k = api.keys(); if (cha) CC.chachaBlock(CC.hexKey(k.key, [32], 'key'), CC.hexKey(k.nonce, [12], 'nonce'), CC.chachaCounter(k), trace); else CC.salsaBlock(CC.hexKey(k.key, [16, 32], 'key'), CC.hexKey(k.nonce, [8], 'nonce'), 0, trace); } catch (e) { trace = []; } }
   function draw(t, prev) {
-    if (!trace.length) { box.innerHTML = hint('<span class="err">Check the key (32 or 64 hexadecimal digits) and the nonce (16).</span>'); return; }
+    if (!trace.length) { box.innerHTML = hint('<span class="err">' + (cha ? 'Check the key (64 hexadecimal digits), the nonce (24) and the block number.' : 'Check the key (32 or 64 hexadecimal digits) and the nonce (16).') + '</span>'); return; }
     t = t || trace[0];
-    var roles = ['const', 'key', 'key', 'key', 'key', 'const', 'nonce', 'nonce', 'counter', 'counter', 'const', 'key', 'key', 'key', 'key', 'const'], col = { 'const': '#3a3416', key: '#163026', nonce: '#1b2a44', counter: '#2a1b33' };
+    var roles = cha ? ['const', 'const', 'const', 'const', 'key', 'key', 'key', 'key', 'key', 'key', 'key', 'key', 'counter', 'nonce', 'nonce', 'nonce'] : ['const', 'key', 'key', 'key', 'key', 'const', 'nonce', 'nonce', 'counter', 'counter', 'const', 'key', 'key', 'key', 'key', 'const'], col = { 'const': '#3a3416', key: '#163026', nonce: '#1b2a44', counter: '#2a1b33' };
     var cw = 140, h = '<svg viewBox="0 0 ' + (4 * cw + 20) + ' 260" width="' + (4 * cw + 20) + '" style="max-width:100%">';
     for (var n = 0; n < 16; n++) {
       var x = 10 + (n % 4) * cw, y = 10 + Math.floor(n / 4) * 52, ch = prev && prev.z[n] !== t.z[n];
       h += '<rect x="' + x + '" y="' + y + '" width="' + (cw - 6) + '" height="46" rx="5" fill="' + (t.r === 0 ? col[roles[n]] : '#161b1c') + '" stroke="' + (ch ? HI : '#2c3638') + '" stroke-width="' + (ch ? 2 : 1) + '"/><text x="' + (x + cw / 2 - 3) + '" y="' + (y + 29) + '" text-anchor="middle" font-size="16" font-family="Consolas" fill="' + (ch ? HI : TXT) + '">' + ('0000000' + t.z[n].toString(16).toUpperCase()).slice(-8) + '</text>';
     }
     h += '<text x="' + (2 * cw + 10) + '" y="250" text-anchor="middle" fill="' + DIM + '" font-size="13" font-family="Georgia">' + (t.r === 0 ? 'starting grid: constant "expand 32-byte k" (gold), key (green), nonce (blue), block counter (purple)' : t.r === 21 ? 'final grid: the mixed grid added to the starting grid = 64 bytes of key stream' : 'after round ' + t.r + ' (' + t.kind + ')') + '</text>';
-    box.innerHTML = h + '</svg>' + hint('Salsa20 mixes this grid of sixteen 32-bit numbers for 20 rounds, alternately down the columns and along the rows, using only add, rotate and exclusive-or. Changed numbers are outlined. (The first 64-byte block is shown.)');
+    box.innerHTML = h + '</svg>' + hint(cha ? 'ChaCha20 mixes this grid of sixteen 32-bit numbers for 20 rounds, alternately down the columns and along the diagonals, using only add, rotate and exclusive-or. The constant fills the top row, the key the middle two rows, and the block number and nonce the bottom row. Changed numbers are outlined. (The first 64-byte block is shown.)' : 'Salsa20 mixes this grid of sixteen 32-bit numbers for 20 rounds, alternately down the columns and along the rows, using only add, rotate and exclusive-or. Changed numbers are outlined. (The first 64-byte block is shown.)');
   }
   var pl = CC.ui.player(host, { count: function () { return trace.length; }, show: function (i) { if (i < 0) { draw(null); return ''; } draw(trace[i], trace[i - 1]); var t = trace[i]; return t.r === 0 ? 'the starting grid' : t.r === 21 ? 'add the starting grid: key stream ready' : 'round ' + t.r + ': quarter-rounds on the ' + t.kind; } });
   return { refresh: function () { build(); draw(null); pl.reset(); }, stop: pl.stop };

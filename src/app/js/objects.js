@@ -134,25 +134,26 @@ OBJ.strips = function (host, api) {
 /* ======================= tabula recta / Vigenere square and a key slider ======================= */
 OBJ.tabula = function (host, api) {
   var box = CC.ui.mk(host, ''), id = api.def.id, steps = [];
-  function alphaT() { return id === 'trithemius' ? CC.trithemiusAlpha(api.keys()) : AZ; }
+  function alphaT() { return id === 'trithemius' ? CC.trithemiusAlpha(api.keys()) : id === 'quagmire3' ? CC.keyAlpha(CC.letters(api.keys().alpha)) : AZ; }
   function draw() {
     var cs = 19, o = 24, W = o + 26 * cs + 4, h = '<svg viewBox="0 0 ' + W + ' ' + W + '" width="' + W + '" style="max-width:560px">';
     var A = alphaT();
     for (var c = 0; c < 26; c++) h += '<text class="th" data-c="' + c + '" x="' + (o + c * cs + cs / 2) + '" y="16" text-anchor="middle" fill="#e8c766" font-size="12" font-family="Consolas">' + A[c] + '</text>';
     for (var r = 0; r < 26; r++) {
-      h += '<text class="tv" data-r="' + r + '" x="10" y="' + (o + r * cs + cs / 2 + 4) + '" text-anchor="middle" fill="#e8c766" font-size="12" font-family="Consolas">' + AZ[r] + '</text>';
+      h += '<text class="tv" data-r="' + r + '" x="10" y="' + (o + r * cs + cs / 2 + 4) + '" text-anchor="middle" fill="#e8c766" font-size="12" font-family="Consolas">' + (id === 'quagmire3' ? A : AZ)[r] + '</text>';
       for (c = 0; c < 26; c++) h += '<rect class="tc" data-r="' + r + '" data-c="' + c + '" x="' + (o + c * cs) + '" y="' + (o + r * cs) + '" width="' + cs + '" height="' + cs + '" fill="' + ((r + c) % 2 ? '#161b1c' : '#1a2021') + '"/><text x="' + (o + c * cs + cs / 2) + '" y="' + (o + r * cs + cs / 2 + 4) + '" text-anchor="middle" fill="#9fb0ab" font-size="11" font-family="Consolas" pointer-events="none">' + (id === 'beaufort' ? AZ[mod(r - c, 26)] : A[(r + c) % 26]) + '</text>';
     }
-    box.innerHTML = h + '</svg><div class="hint" style="text-align:center">' + (id === 'beaufort' ? 'The Beaufort square: each row runs backwards (Z to A). Row = key letter, column = plain letter; the cell is the cipher letter. The same square deciphers: row = key letter, column = cipher letter.' : id === 'varbeaufort' ? 'Variant Beaufort: find the plain letter in the key row; the column heading is the cipher letter.' : (id === 'trithemius' ? 'Row = this letter\'s step (A = no change), column = plain letter; the cell is the cipher letter.' : 'Row = key letter, column = plain letter; the cell is the cipher letter.')) + '</div>';
+    box.innerHTML = h + '</svg><div class="hint" style="text-align:center">' + (id === 'beaufort' ? 'The Beaufort square: each row runs backwards (Z to A). Row = key letter, column = plain letter; the cell is the cipher letter. The same square deciphers: row = key letter, column = cipher letter.' : id === 'varbeaufort' ? 'Variant Beaufort: find the plain letter in the key row; the column heading is the cipher letter.' : (id === 'trithemius' ? 'Row = this letter\'s step (A = no change), column = plain letter; the cell is the cipher letter.' : id === 'gronsfeld' ? 'Row = key digit (0 = row A, 1 = row B ... 9 = row J), column = plain letter; the cell is the cipher letter. Only the first ten rows are ever used.' : id === 'quagmire3' ? 'The whole square, headings included, uses the mixed alphabet. Row = key letter, column = plain letter; the cell is the cipher letter.' : 'Row = key letter, column = plain letter; the cell is the cipher letter.')) + '</div>';
   }
   function build() {
     steps = []; var t = CC.letters(api.input()), k = api.keys(), key;
     if (id === 'trithemius') key = t.split('').map(function (_, i) { return AZ[mod(CC.trithemiusShift(k, i), 26)]; }).join('');
     else if (id === 'autokey') key = (CC.letters(k.key) || 'A') + t;
     else if (id === 'runningkey') { try { key = CC.byId.runningkey.key(k, t.length); } catch (e) { key = ''; } }
+    else if (id === 'gronsfeld') { var Gd = String(k.key || '').replace(/\D/g, '') || '0'; key = t.split('').map(function (_, i) { return AZ[+Gd[i % Gd.length]]; }).join(''); }
     else { var K = CC.letters(k.key) || 'A'; key = t.split('').map(function (_, i) { return K[i % K.length]; }).join(''); }
     var A = alphaT();
-    t.split('').forEach(function (p, i) { if (!key[i]) return; var ki = AZ.indexOf(key[i]), pi = A.indexOf(p), out;
+    t.split('').forEach(function (p, i) { if (!key[i]) return; var ki = (id === 'quagmire3' ? A : AZ).indexOf(key[i]), pi = A.indexOf(p), out;
       if (id === 'beaufort') out = mod(ki - pi, 26); else if (id === 'varbeaufort') out = mod(pi - ki, 26); else out = mod(pi + ki, 26);
       steps.push({ p: p, k: key[i], pi: pi, ki: ki, o: A[out], oi: out }); });
   }
@@ -170,7 +171,7 @@ OBJ.tabula = function (host, api) {
         if (a === R && b === Cc) { r.setAttribute('fill', '#ffd75e'); r.classList.add('hit'); t.setAttribute('fill', '#111'); t.setAttribute('font-weight', 'bold'); t.setAttribute('font-size', '14'); } else r.classList.remove('hit'); });
       [box.querySelector('.tv[data-r="' + R + '"]'), box.querySelector('.th[data-c="' + Cc + '"]')].forEach(function (t) { t.setAttribute('fill', '#ffd75e'); t.setAttribute('font-weight', 'bold'); t.setAttribute('font-size', '15'); });
       if (id === 'varbeaufort') { var hd = box.querySelector('.th[data-c="' + Cc + '"]'); hd.setAttribute('fill', '#4fb38a'); hd.setAttribute('font-size', '17'); }
-      return 'letter ' + (i + 1) + ': plain ' + s.p + (id === 'trithemius' ? ' on row ' + s.k : ' with key ' + s.k) + ' &rarr; ' + s.o;
+      return 'letter ' + (i + 1) + ': plain ' + s.p + (id === 'trithemius' ? ' on row ' + s.k : id === 'gronsfeld' ? ' with key digit ' + s.ki + ' (row ' + s.k + ')' : ' with key ' + s.k) + ' &rarr; ' + s.o;
     }
   });
   return { refresh: function () { draw(); build(); pl.reset(); }, stop: pl.stop };
