@@ -43,6 +43,8 @@ function expected(d, m, k) {
   if (d.id === 'semaphore' || d.id === 'chappe') e = e.replace(/[^A-Z0-9]/g, '');
   if (d.id === 'adfgvx' && k.variant === 'ADFGX') e = letters(m).replace(/J/g, 'I');
   if (d.id === 'sigaba') e = letters(m).replace(/Z/g, 'X');
+  if (d.id === 'nihilist') e = letters(m).replace(/J/g, 'I');
+  if (/^(amsco|porta|gronsfeld|quagmire3|hebern)$/.test(d.id)) e = letters(m);
   if (d.id === 'purple') e = letters(m);
   if (/^(checkerboard|vic)$/.test(d.id)) e = norm(m);
   if (d.id === 'ogham') e = letters(m).replace(/[JKVWXY]/g, c => ({ J: 'I', K: 'C', V: 'F', W: 'U', X: 'CS', Y: 'I' })[c]);
@@ -74,7 +76,7 @@ function compare(d, e, got, k) {
       runs++;
       let c, shown, p;
       try { c = await d.enc(m, k); }
-      catch (e) { if (/needs at least|runs out|too long|shorter than|The key is|cannot be undone|hexadecimal|Switch setting|rotor numbers|needs at least 20|top row|date needs|keygroup is|plugboard alphabet|must be whole|lower rows|column numbers|letters\.|digits\./.test(e.message)) { refused++; pass++; refusedBy[d.id] = (refusedBy[d.id] || 0) + 1; if (!/runs out|too long|shorter than|needs at least \d/.test(e.message) && JSON.stringify(k) === JSON.stringify(Object.fromEntries(d.keys.map(x => [x.id, x.def])))) (fails[d.id] = fails[d.id] || []).push('default key refused: ' + e.message); continue; } (fails[d.id] = fails[d.id] || []).push('enc threw ' + e.message + ' ' + JSON.stringify(k) + ' ' + m); continue; }
+      catch (e) { if (/needs at least|runs out|too long|shorter than|The key is|cannot be undone|hexadecimal|Switch setting|rotor numbers|needs at least 20|top row|date needs|keygroup is|plugboard alphabet|must be whole|lower rows|column numbers|letters\.|digits\.|key is a number|list all 26 letters|block counter is a whole number/.test(e.message)) { refused++; pass++; refusedBy[d.id] = (refusedBy[d.id] || 0) + 1; if (!/runs out|too long|shorter than|needs at least \d/.test(e.message) && JSON.stringify(k) === JSON.stringify(Object.fromEntries(d.keys.map(x => [x.id, x.def])))) (fails[d.id] = fails[d.id] || []).push('default key refused: ' + e.message); continue; } (fails[d.id] = fails[d.id] || []).push('enc threw ' + e.message + ' ' + JSON.stringify(k) + ' ' + m); continue; }
       shown = CC.groupOut(c, d, n, k).text;
       try { p = await d.dec(shown, k); } catch (e) { (fails[d.id] = fails[d.id] || []).push('dec threw ' + e.message); continue; }
       const e = expected(d, m, k);
