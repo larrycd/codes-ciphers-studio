@@ -12,7 +12,7 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 $Port = 8771
-$Version = '1.0.3'
+$Version = '1.1.0'
 $ResultFile = Join-Path $env:TEMP 'CodesCiphersStudio-install-result.txt'
 if (-not $Source) { $Source = Join-Path $PSScriptRoot 'payload' }
 $App = Join-Path $env:LOCALAPPDATA 'CodesCiphersStudio'
@@ -53,7 +53,9 @@ Write-Host "Codes & Ciphers Studio $Version installer - by Larry Dalton" -Foregr
 Write-Host ''
 try {
     if ($PSVersionTable.PSVersion.Major -lt 5) { throw 'Windows PowerShell 5.1 or later is required.' }
-    $files = @('server.ps1', 'app\index.html', 'app\icon.svg', 'app\js\core.js', 'app\js\trans.js', 'app\js\poly.js', 'app\js\misc.js', 'app\js\objects.js', 'app\js\objects2.js', 'app\js\ui.js', 'app\data\beale.json', 'app\data\quadgrams.json')
+    $files = @('server.ps1', 'app\index.html', 'app\icon.svg', 'app\js\core.js', 'app\js\trans.js', 'app\js\poly.js', 'app\js\misc.js', 'app\js\devices.js', 'app\js\objects.js', 'app\js\objects2.js', 'app\js\objects3.js', 'app\js\ui.js', 'app\data\beale.json', 'app\data\quadgrams.json',
+        'app\fonts\CCRunic.ttf', 'app\fonts\CCOgham.ttf', 'app\fonts\CCHiero.ttf', 'app\fonts\CCTengwar.otf', 'app\fonts\CCTheban.otf',
+        'app\licenses\AlcarinTengwar-OFL.txt', 'app\licenses\NewGardiner-OFL.txt', 'app\licenses\NotoSansOgham-OFL.txt', 'app\licenses\NotoSansRunic-OFL.txt', 'app\licenses\Theban-public-domain.txt')
     foreach ($f in $files) {
         if (-not (Test-Path -LiteralPath (Join-Path $Source $f))) { throw "Package file missing: $f" }
     }
@@ -89,8 +91,13 @@ try {
     $eng = Get-Text "http://localhost:$Port/js/core.js"
     if ($eng -notmatch 'Codes & Ciphers Studio engine') { throw 'The engine was not served correctly.' }
     $registered = 0
-    foreach ($js in @('core', 'trans', 'poly', 'misc')) { $registered += ([regex]::Matches((Get-Text "http://localhost:$Port/js/$js.js"), 'CC\.reg\(\{ id: ')).Count }
-    if ($registered -lt 62) { throw "Not all ciphers are present ($registered of 62)." }
+    foreach ($js in @('core', 'trans', 'poly', 'misc', 'devices')) { $registered += ([regex]::Matches((Get-Text "http://localhost:$Port/js/$js.js"), 'CC\.reg\(\{ id: |scriptReg\(''')).Count }
+    if ($registered -lt 78) { throw "Not all ciphers are present ($registered of 78)." }
+    foreach ($ft in @('CCRunic.ttf', 'CCOgham.ttf', 'CCHiero.ttf', 'CCTengwar.otf', 'CCTheban.otf')) {
+        $fb = Get-Url "http://localhost:$Port/fonts/$ft"
+        $sig = [System.BitConverter]::ToString($fb, 0, 4)
+        if ($sig -ne '00-01-00-00' -and $sig -ne '4F-54-54-4F') { throw "Font not served correctly: $ft" }
+    }
     $beale = Get-Text "http://localhost:$Port/data/beale.json"
     $bealeNums = ([regex]::Matches(($beale -replace '^.*"beale2":\s*\[', '' -replace '\].*$', ''), '\d+')).Count
     if ($bealeNums -ne 761) { throw "Beale cipher data incomplete ($bealeNums numbers)." }
@@ -104,7 +111,7 @@ try {
     }
     $bad = $false; try { Get-Url "http://localhost:$Port/..%5Cserver.ps1" | Out-Null; $bad = $true } catch { }
     if ($bad) { throw 'The server allowed access outside the studio folder.' }
-    Step "Verified over HTTP: page, engine with $registered codes and ciphers, $bealeNums Beale numbers, $quadCount codebreaker letter groups, every file's size, folder protection"
+    Step "Verified over HTTP: page, engine with $registered codes and ciphers, 5 script fonts, $bealeNums Beale numbers, $quadCount codebreaker letter groups, every file's size, folder protection"
 
     $ws = New-Object -ComObject WScript.Shell
     $lnk = $ws.CreateShortcut($StartupLnk)
