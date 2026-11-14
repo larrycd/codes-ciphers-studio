@@ -7,6 +7,8 @@
 <link rel="icon" href="icon.svg">
 <style>
 :root { --bg:#0e1112; --panel:#161b1c; --panel2:#1e2526; --line:#2c3638; --text:#edf0ee; --dim:#97a3a0; --acc:#c9a227; --acc2:#e8c766; --grn:#4fb38a; --ok:#5fb37f; --warn:#d9a441; --bad:#e0605a; --hi:#ffd75e; }
+@font-face { font-family:CCRunic; src:url(fonts/CCRunic.ttf); } @font-face { font-family:CCOgham; src:url(fonts/CCOgham.ttf); } @font-face { font-family:CCTengwar; src:url(fonts/CCTengwar.otf); }
+@font-face { font-family:CCHiero; src:url(fonts/CCHiero.ttf); } @font-face { font-family:CCTheban; src:url(fonts/CCTheban.otf); }
 * { box-sizing:border-box; }
 body { margin:0; background:var(--bg); color:var(--text); font:14px/1.5 "Segoe UI", system-ui, sans-serif; }
 header { display:flex; align-items:center; gap:14px; padding:10px 18px; border-bottom:1px solid var(--line); background:linear-gradient(90deg,#1d2410,#0e1112 60%); }
@@ -31,7 +33,7 @@ section { background:var(--panel); border:1px solid var(--line); border-radius:1
 h2 { margin:0 0 6px; font:600 19px Georgia, serif; color:var(--acc2); }
 h3 { margin:14px 0 6px; font-size:12px; text-transform:uppercase; letter-spacing:1px; color:var(--dim); }
 .about { color:#cdd5d2; margin:0 0 10px; }
-textarea { width:100%; min-height:84px; resize:vertical; background:var(--panel2); color:var(--text); border:1px solid var(--line); border-radius:8px; padding:9px; font:16px/1.5 Consolas, "Segoe UI Symbol", monospace; }
+textarea { width:100%; min-height:84px; resize:vertical; background:var(--panel2); color:var(--text); border:1px solid var(--line); border-radius:8px; padding:9px; font:16px/1.5 Consolas, CCRunic, CCOgham, CCTengwar, CCHiero, CCTheban, "Segoe UI Symbol", monospace; }
 input[type=text], input[type=search], input[type=number] { width:100%; background:var(--panel2); color:var(--text); border:1px solid var(--line); border-radius:7px; padding:7px 9px; font:14px Consolas, monospace; }
 select { background:var(--panel2); color:var(--text); border:1px solid var(--line); border-radius:7px; padding:6px 8px; font-size:13px; max-width:100%; }
 .keys { display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr)); gap:8px 12px; margin:8px 0; }
@@ -40,7 +42,7 @@ select { background:var(--panel2); color:var(--text); border:1px solid var(--lin
 button.b { background:var(--panel2); color:var(--text); border:1px solid var(--line); border-radius:7px; padding:6px 11px; cursor:pointer; font-size:13px; }
 button.b:hover { border-color:var(--acc); } button.b:disabled { opacity:.4; cursor:default; }
 button.p { background:var(--acc); border-color:var(--acc); color:#111; font-weight:700; }
-.out { font:17px/1.6 Consolas, "Segoe UI Symbol", monospace; background:#0b0f0f; border:1px solid var(--line); border-radius:8px; padding:9px 11px; word-break:break-all; white-space:pre-wrap; min-height:44px; }
+.out { font:17px/1.6 Consolas, CCRunic, CCOgham, CCTengwar, CCHiero, CCTheban, "Segoe UI Symbol", monospace; background:#0b0f0f; border:1px solid var(--line); border-radius:8px; padding:9px 11px; word-break:break-all; white-space:pre-wrap; min-height:44px; }
 .hint { color:var(--dim); font-size:12px; }
 .note { font-size:12.5px; color:#cdd5d2; border-left:3px solid var(--acc); padding:5px 9px; margin:8px 0; background:#1b1d12; }
 .err { color:var(--bad); }
@@ -78,7 +80,7 @@ th { color:var(--dim); font-weight:600; font-size:11px; text-transform:uppercase
 <body>
 <header>
   <svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#2b2a14" stroke="#c9a227" stroke-width="3"/><circle cx="32" cy="32" r="19" fill="#161b1c" stroke="#e8c766" stroke-width="2"/><g fill="#e8c766" font-family="Georgia" font-size="9" text-anchor="middle"><text x="32" y="11">A</text><text x="53" y="35">D</text><text x="32" y="59">G</text><text x="11" y="35">J</text></g><g fill="#4fb38a" font-family="Georgia" font-size="11" text-anchor="middle"><text x="32" y="22">X</text><text x="42" y="36">A</text><text x="32" y="49">D</text><text x="22" y="36">G</text></g><circle cx="32" cy="32" r="3" fill="#c9a227"/></svg>
-  <div><h1>Codes &amp; Ciphers Studio</h1><div class="by">by Larry Dalton &middot; working models of the codes and ciphers in Sunil Tanna's <i>Codes, Ciphers, Steganography &amp; Secret Messages</i></div></div>
+  <div><h1>Codes &amp; Ciphers Studio</h1><div class="by">by Larry Dalton &middot; every secret is a contest between two minds &mdash; three thousand years of it, in your hands</div></div>
   <div class="sp"></div>
   <div class="ver" id="ver"></div>
 </header>
@@ -107,8 +109,10 @@ th { color:var(--dim); font-weight:600; font-size:11px; text-transform:uppercase
 <script src="js/trans.js"></script>
 <script src="js/poly.js"></script>
 <script src="js/misc.js"></script>
+<script src="js/devices.js"></script>
 <script src="js/objects.js"></script>
 <script src="js/objects2.js"></script>
+<script src="js/objects3.js"></script>
 <script src="js/ui.js"></script>
 </body>
 </html>
