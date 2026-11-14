@@ -1,7 +1,7 @@
 # How it works
 
 - `src/server.ps1` is a small Windows PowerShell web server on port 8771 that serves `src/app`.
-- `src/app/js/core.js`, `trans.js`, `poly.js`, `misc.js` and `devices.js` (new in 1.1) are the engine: every code and cipher is one `CC.reg({...})`
+- `src/app/js/core.js`, `trans.js`, `poly.js`, `misc.js`, `devices.js` (1.1) and `devices2.js` (1.2) are the engine: every code and cipher is one `CC.reg({...})`
   entry with its key fields, `enc`, `dec`, a sample and test vectors.
 - `src/app/js/objects.js`, `objects2.js` and `objects3.js` draw the working models (SVG) and step through each letter.
 - `src/app/js/ui.js` is the page: cipher list, workbench, codebreaker, famous cryptograms, self-test, about.
