@@ -35,3 +35,13 @@ Added in version 1.2:
   RC4, straddling checkerboard, affine, Diffie-Hellman and the VIC key lines: the examples on Wikipedia.
 - Crypto-1 was checked during development against the Proxmark3 crapto1 library (GPL); none of its code is included.
 - SIGABA follows the mechanism described by Stamp and Chan; its rotor wirings are examples made for the studio.
+
+Added in version 1.3:
+
+- DES worked example: J. Orlin Grabbe, "The DES Algorithm Illustrated". DES tables: FIPS 46-3.
+- ChaCha20 test vectors: RFC 8439 (IETF). ElGamal worked example: Menezes, van Oorschot and Vanstone, *Handbook of Applied
+  Cryptography*, example 8.18.
+- AMSCO example: the American Cryptogram Association's cipher description. Porta examples: the test cases of the Rust
+  `ciphers` crate. Fractionated Morse example: TheAlgorithms/Python. Nihilist example: Wikipedia. Kryptos K1: Jim Sanborn.
+- DES and ChaCha20 were compared during development with the PyCryptodome library; none of its code is included.
+- The Hebern rotor wiring is an example made for the studio.

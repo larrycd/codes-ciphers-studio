@@ -2,7 +2,7 @@
 
 **by Larry Dalton**
 
-89 working codes, ciphers and ways of hiding a message, following the chapters of Sunil Tanna's
+100 working codes, ciphers and ways of hiding a message, following the chapters of Sunil Tanna's
 *Codes, Ciphers, Steganography & Secret Messages*, plus chapters of cipher wheels and devices, spy ciphers and cipher
 machines, and the stream ciphers in your phone, Wi-Fi and travel card. Everything runs on your own Windows computer at
 `http://localhost:8771/`; nothing you type leaves the machine.
@@ -37,6 +37,20 @@ machines, and the stream ciphers in your phone, Wi-Fi and travel card. Everythin
 - **Heath's deciphering dice**: Royal V. Heath's 1927 lightning-addition trick, with dice you can roll
 - **ADFGVX / ADFGX** (German Army, 1918) and the **Hill cipher** (1929) join chapters 5 and 6
 
+## New in 1.3: the hundred
+
+| | |
+|---|---|
+| ![DES](docs/images/des.png) | ![Hebern rotor machine](docs/images/hebern.png) |
+
+- **DES**, the 1977 US standard: all 16 Feistel rounds shown with their round keys, and the f-function opened up
+  (expansion, round key, the eight S-boxes, permutation)
+- **Hebern rotor machine** (1917), the first rotor machine: watch the wire move as the rotor turns
+- **ChaCha20**, which protects much of today's internet (TLS 1.3, WireGuard, SSH), on the same 4 x 4 grid as Salsa20
+- **ElGamal** public-key encryption, built on Diffie-Hellman
+- **Nihilist cipher** (Russian revolutionaries, 1880s), **Porta** (1563), **Gronsfeld**, **Quagmire III** (the Kryptos cipher),
+  **AMSCO**, **Fractionated Morse** and the **Kama Sutra cipher**, each with its own working model
+
 ## New in 1.2: spy ciphers, cipher machines and stream ciphers
 
 | | |
@@ -59,20 +73,20 @@ machines, and the stream ciphers in your phone, Wi-Fi and travel card. Everythin
 |---|---|
 | 1 Communication codes | Signal flags, semaphore, Polybius square, tap code, Chappe, Cooke & Wheatstone, Morse, Baudot (1888 patent table), ITA2, ASCII/hex/Base64 |
 | 2 Caesar ciphers | Caesar, ROT13, ROT5, ROT18, ROT47, Avgad, Albam, affine |
-| 3 Substitution | Atbash, keyword, pigpen, symbol sets, homophonic, nulls |
-| 4 Transposition | Scytale, rail fence, route, columnar, double columnar, Myszkowski, disrupted, trellis, Fleissner, crossword |
-| 5 Fractionation | Bifid, Trifid, ADFGVX / ADFGX |
+| 3 Substitution | Atbash, keyword, pigpen, symbol sets, homophonic, nulls, Kama Sutra cipher |
+| 4 Transposition | Scytale, rail fence, route, columnar, double columnar, Myszkowski, disrupted, trellis, Fleissner, crossword, AMSCO |
+| 5 Fractionation | Bifid, Trifid, ADFGVX / ADFGX, Fractionated Morse |
 | 6 Polygraphic | Playfair, Two-square, Four-square, Hill |
-| 7 Polyalphabetic | Alberti, Trithemius, Vigenère, Beaufort, Variant Beaufort, Autokey, Hagelin M-209 |
+| 7 Polyalphabetic | Alberti, Trithemius, Vigenère, Beaufort, Variant Beaufort, Autokey, Hagelin M-209, Porta, Gronsfeld, Quagmire III |
 | 8 Enigma | Enigma I / M3 / M4 |
 | 9 Perfect ciphers | Vernam, one-time pad, Lorenz SZ40/42 |
 | 10 Codewords | One-time code, nomenclator |
 | 11 Book ciphers | Book word, book letter (Beale style), running key |
-| 12 Computer cryptography | AES-256 (Web Crypto), RSA, SHA hashes and ECDSA signatures, Diffie-Hellman key exchange |
+| 12 Computer cryptography | AES-256 (Web Crypto), RSA, SHA hashes and ECDSA signatures, Diffie-Hellman key exchange, DES, ElGamal |
 | 13 Steganography | Null ciphers, Bacon's cipher, Cardan grille, invisible text, messages hidden in pictures |
 | 14 Cipher wheels and devices | Mexican Army wheel, Janelle cipher, Enigma slide, Heath's dice, Braille, runes, Tengwar, hieroglyph, Ogham and Theban wheels, Confederate disk, Jefferson / M-94, Chaocipher, Solitaire |
-| 15 Spy ciphers and cipher machines (1.2) | Straddling checkerboard, VIC, SIGABA, PURPLE |
-| 16 Stream ciphers in your pocket (1.2) | A5/1, RC4, Crypto-1, Salsa20, Trivium |
+| 15 Spy ciphers and cipher machines (1.2) | Straddling checkerboard, VIC, SIGABA, PURPLE, Nihilist cipher, Hebern rotor machine |
+| 16 Stream ciphers in your pocket (1.2) | A5/1, RC4, Crypto-1, Salsa20, Trivium, ChaCha20 |
 
 Plus a **Codebreaker** (letter counts, coincidence index, Caesar / Vigenère / substitution solvers, crib dragging)
 and **Famous cryptograms**: Beale cipher no. 2 decoded live with the Declaration of Independence, and the 1977
@@ -80,19 +94,22 @@ RSA-129 "The Magic Words are Squeamish Ossifrage" message unlocked with the 1994
 
 ## Checked, not just drawn
 
-The Self-test page runs 143 checks: the book's worked examples (10 reproduced exactly; 2 differ from the book
+The Self-test page runs 171 checks: the book's worked examples (10 reproduced exactly; 2 differ from the book
 for documented reasons), standard published test messages, the 1941 Operation Barbarossa Enigma message,
 Enigma's double step, round trips through every cipher, AES, RSA, signatures and picture hiding, and (new in 1.1)
 the published test messages for ADFGVX, Hill, Chaocipher and Solitaire, dCode's Mexican Army example and Heath's rule
 for all 7,776 rolls of the dice; and (1.2) part 1 of the 1941 PURPLE message, the A5/1 reference frame, eSTREAM vectors for
 Salsa20 and Trivium, Wikipedia's RC4, checkerboard, affine and Diffie-Hellman examples, the VIC key lines A to S, and Crypto-1
-against the Proxmark3 crapto1 library.
+against the Proxmark3 crapto1 library; and (1.3) the classic DES worked example round by round, the RFC 8439 ChaCha20
+examples, the Handbook of Applied Cryptography's ElGamal example, the American Cryptogram Association's AMSCO example, and
+published examples for Porta, Nihilist, Quagmire III (Kryptos K1) and Fractionated Morse. While 1.3 was being built, DES and
+ChaCha20 were also compared with the PyCryptodome library on 400 random keys and messages, with no differences.
 `node test/vectors.js` runs the same engine checks from the command line.
 
 Exhaustive tests: `node test/exhaustive.js` enciphers, groups (off, 3, 4, 5) and deciphers every code and cipher with
-10 messages and every key option (26,008 round trips, all passing; in 6,068 of them the studio rightly refuses the setting:
+10 messages and every key option (31,088 round trips, all passing; in 8,672 of them the studio rightly refuses the setting:
 mostly a test word typed where hexadecimal digits are needed, or a message too long for its cover text, or a Hill key that cannot be undone); `node test/ui-exhaustive.js` repeats that in a real
-browser through the buttons, plays every step of every working model and checks the page fits the window (834 checks);
+browser through the buttons, plays every step of every working model and checks the page fits the window (944 checks);
 `node test/play-matches.js` and `node test/tabula.js` check that what each model highlights agrees with the result.
 
 Honest notes: where the book's own example breaks the standard rule (Autokey, vertical Two-square,
@@ -103,7 +120,9 @@ the box) and the dice faces are the studio's own, built on Heath's rule. The scr
 as cipher wheels do; real runes, Tengwar and hieroglyphs were written by sound. Jefferson's own disk alphabets are lost, so the
 cylinder uses the US Army M-94's 25 disks. SIGABA's real rotor wirings were never published, so its wirings are examples; no
 complete published VIC message with all its keys was available, so the VIC key lines are checked against the published example
-and whole messages by round trips.
+and whole messages by round trips. Every Hebern rotor was wired differently, so its wiring is an example; the Kama Sutra does
+not say how its letters are paired, so the keyword pairing is the studio's. DES (one block at a time, ECB) and ElGamal (no
+padding) are teaching versions of the real algorithms.
 
 ## Install
 
