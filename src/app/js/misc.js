@@ -1,12 +1,12 @@
 /* Codes & Ciphers Studio engine - by Larry Dalton
-   Chapter 10 (codewords), 11 (book ciphers), 12 (computer cryptography), 13 (steganography), codebreaker tools */
+   Section 10 (codewords), 11 (book ciphers), 12 (computer cryptography), 13 (steganography), codebreaker tools */
 (function (G) {
 'use strict';
 var CC = G.CC, AZ = CC.AZ, mod = CC.mod;
 var subtle = function () { var c = G.crypto || (typeof require === 'function' ? require('crypto').webcrypto : null); return c.subtle; };
 
 /* =====================================================================
-   Chapter 10 - codewords
+   Section 10 - codewords
    ===================================================================== */
 /* a small field codebook made for this studio */
 CC.codebook = ['ATTACK', 'AT DAWN', 'AT DUSK', 'AT MIDNIGHT', 'TODAY', 'TOMORROW', 'TONIGHT', 'RETREAT', 'ADVANCE', 'HOLD POSITION', 'ENEMY', 'AIRCRAFT', 'SHIPS', 'TANKS',
@@ -74,7 +74,7 @@ CC.reg({ id: 'nomenclator', ch: 10, name: 'Nomenclator', kind: 'code', object: '
 });
 
 /* =====================================================================
-   Chapter 11 - book ciphers (default book: the Declaration of Independence, loaded by the app)
+   Section 11 - book ciphers (default book: the Declaration of Independence, loaded by the app)
    ===================================================================== */
 CC.book = { text: '', name: 'Declaration of Independence (1776)' };
 CC.bookWords = function (t) { return (String(t || CC.book.text).match(/[A-Za-z']+/g) || []); };
@@ -128,7 +128,7 @@ CC.reg({ id: 'runningkey', ch: 11, name: 'Running key', kind: 'cipher', object: 
 });
 
 /* =====================================================================
-   Chapter 12 - computer cryptography (real algorithms from the browser's Web Crypto)
+   Section 12 - computer cryptography (real algorithms from the browser's Web Crypto)
    ===================================================================== */
 CC.hex = function (buf) { return Array.prototype.map.call(new Uint8Array(buf), function (b) { return ('0' + b.toString(16)).slice(-2); }).join(''); };
 CC.unhex = function (h) { h = String(h).replace(/[^0-9a-f]/gi, ''); var a = new Uint8Array(h.length / 2); for (var i = 0; i < a.length; i++) a[i] = parseInt(h.substr(i * 2, 2), 16); return a; };
@@ -210,7 +210,7 @@ CC.rsa129Solve = function () {
 };
 
 /* =====================================================================
-   Chapter 13 - steganography
+   Section 13 - steganography
    ===================================================================== */
 CC.reg({ id: 'nullcipher', ch: 13, name: 'Null cipher (hidden in ordinary text)', kind: 'stego', object: 'nullcipher',
   keys: [{ id: 'rule', label: 'Hidden letters are', type: 'select', def: 'first', options: [['first', 'First letter of each word'], ['second', 'Second letter of each word'], ['last', 'Last letter of each word'], ['lines', 'First letter of each line (acrostic)']] }],

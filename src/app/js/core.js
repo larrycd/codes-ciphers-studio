@@ -1,9 +1,9 @@
 /* Codes & Ciphers Studio engine - by Larry Dalton
-   core: helpers, registry, Chapter 1 (communication codes), Chapter 2 (Caesar family), Chapter 3 (substitution) */
+   core: helpers, registry, Section 1 (communication codes), Section 2 (Caesar family), Section 3 (substitution) */
 (function (G) {
 'use strict';
 var CC = G.CC = G.CC || {};
-CC.version = '1.3.0';
+CC.version = '1.3.1';
 CC.list = [];
 CC.byId = {};
 CC.chapters = {
@@ -55,7 +55,7 @@ CC.seeded = function (seed) { var x = seed >>> 0 || 1; return function (n) { x ^
 CC.fill = function (n, opt) { var r = opt && opt.seed ? CC.seeded(opt.seed) : CC.rand, s = ''; for (var i = 0; i < n; i++) s += opt && opt.pad ? opt.pad : AZ[r(26)]; return s; };
 
 /* =====================================================================
-   Chapter 1 - codes used for communication
+   Section 1 - codes used for communication
    ===================================================================== */
 /* International Code of Signals flags: drawn by the UI from this description */
 CC.flags = {
@@ -266,7 +266,7 @@ CC.b64 = function (b) { var o = ''; for (var i = 0; i < b.length; i += 3) { var 
 CC.unb64 = function (s) { s = s.replace(/[^A-Za-z0-9+/]/g, ''); var o = [], bits = 0, v = 0; for (var i = 0; i < s.length; i++) { v = (v << 6) | B64.indexOf(s[i]); bits += 6; if (bits >= 8) { bits -= 8; o.push((v >> bits) & 255); } } return o; };
 
 /* =====================================================================
-   Chapter 2 - Caesar family
+   Section 2 - Caesar family
    ===================================================================== */
 CC.shift = function (s, n) { return CC.mapText(s, function (c, i) { return AZ[mod(i + n, 26)]; }); };
 CC.reg({ id: 'caesar', ch: 2, name: 'Caesar cipher', kind: 'cipher', object: 'wheel',
@@ -319,7 +319,7 @@ CC.reg({ id: 'albam', ch: 2, name: 'Albam', kind: 'cipher', object: 'wheel', fix
 });
 
 /* =====================================================================
-   Chapter 3 - simple substitution
+   Section 3 - simple substitution
    ===================================================================== */
 CC.reg({ id: 'atbash', ch: 3, name: 'Atbash', kind: 'cipher', object: 'strips',
   about: 'The alphabet backwards: A to Z, B to Y. Doing it twice gives the original.',

@@ -1,5 +1,5 @@
 /* Codes & Ciphers Studio engine - by Larry Dalton
-   Chapter 7 (polyalphabetic and the M-209), Chapter 8 (Enigma), Chapter 9 (Vernam, one-time pad, Lorenz) */
+   Section 7 (polyalphabetic and the M-209), Section 8 (Enigma), Section 9 (Vernam, one-time pad, Lorenz) */
 (function (G) {
 'use strict';
 var CC = G.CC, AZ = CC.AZ, mod = CC.mod;
@@ -65,7 +65,7 @@ CC.reg({ id: 'vigenere', ch: 7, name: 'Vigenère', kind: 'cipher', object: 'tabu
   about: 'The keyword is written over the message again and again; each key letter picks a row of the Vigenère square.',
   enc: function (s, k) { var K = keyLetters(k), t = CC.letters(s); return CC.streamText(s, function (i, j) { return AZ.indexOf(t[j]) + AZ.indexOf(K[j % K.length]); }); },
   dec: function (s, k) { var K = keyLetters(k), t = CC.letters(s); return CC.streamText(s, function (i, j) { return AZ.indexOf(t[j]) - AZ.indexOf(K[j % K.length]); }); },
-  vectors: [{ k: { key: 'DIEGO' }, p: 'WE QUELL THE STORM AND RIDE THE THUNDER', c: 'ZMUASOTXNSVBSXADVHXWGMXNSWPYTRHZ', src: 'book' },
+  vectors: [{ k: { key: 'DIEGO' }, p: 'WE QUELL THE STORM AND RIDE THE THUNDER', c: 'ZMUASOTXNSVBSXADVHXWGMXNSWPYTRHZ', src: 'classic worked example' },
             { k: { key: 'LEMON' }, p: 'ATTACKATDAWN', c: 'LXFOPVEFRNHR' }],
   sample: 'We quell the storm and ride the thunder'
 });

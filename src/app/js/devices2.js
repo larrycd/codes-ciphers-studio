@@ -1,6 +1,6 @@
 /* Codes & Ciphers Studio engine - by Larry Dalton
-   Version 1.2: affine (chapter 2), Diffie-Hellman (chapter 12), spy ciphers and machines (chapter 15: straddling checkerboard,
-   VIC, SIGABA, PURPLE) and stream ciphers in your pocket (chapter 16: A5/1, RC4, Crypto-1, Salsa20, Trivium). */
+   Version 1.2: affine (section 2), Diffie-Hellman (section 12), spy ciphers and machines (section 15: straddling checkerboard,
+   VIC, SIGABA, PURPLE) and stream ciphers in your pocket (section 16: A5/1, RC4, Crypto-1, Salsa20, Trivium). */
 (function (G) {
 'use strict';
 var CC = G.CC, AZ = CC.AZ, mod = CC.mod;

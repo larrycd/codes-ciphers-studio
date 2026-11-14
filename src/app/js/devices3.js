@@ -1,7 +1,7 @@
 /* Codes & Ciphers Studio engine - by Larry Dalton
-   Version 1.3: the Kama Sutra cipher (chapter 3), AMSCO (chapter 4), Fractionated Morse (chapter 5), Porta, Gronsfeld and
-   Quagmire III (chapter 7), DES and ElGamal (chapter 12), the Nihilist cipher and the Hebern rotor machine (chapter 15)
-   and ChaCha20 (chapter 16). */
+   Version 1.3: the Kama Sutra cipher (section 3), AMSCO (section 4), Fractionated Morse (section 5), Porta, Gronsfeld and
+   Quagmire III (section 7), DES and ElGamal (section 12), the Nihilist cipher and the Hebern rotor machine (section 15)
+   and ChaCha20 (section 16). */
 (function (G) {
 'use strict';
 var CC = G.CC, AZ = CC.AZ, mod = CC.mod;

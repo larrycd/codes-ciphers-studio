@@ -1,5 +1,5 @@
 /* Codes & Ciphers Studio engine - by Larry Dalton
-   Version 1.1: cipher wheels and devices (chapter 14), ADFGVX (chapter 5), Hill (chapter 6) */
+   Version 1.1: cipher wheels and devices (section 14), ADFGVX (section 5), Hill (section 6) */
 (function (G) {
 'use strict';
 var CC = G.CC, AZ = CC.AZ, mod = CC.mod;

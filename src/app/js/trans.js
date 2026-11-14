@@ -1,5 +1,5 @@
 /* Codes & Ciphers Studio engine - by Larry Dalton
-   Chapter 4 (transposition), Chapter 5 (fractionation), Chapter 6 (polygraphic) */
+   Section 4 (transposition), Section 5 (fractionation), Section 6 (polygraphic) */
 (function (G) {
 'use strict';
 var CC = G.CC, AZ = CC.AZ, mod = CC.mod;
@@ -37,8 +37,8 @@ CC.reg({ id: 'railfence', ch: 4, name: 'Rail fence', kind: 'cipher', object: 'ra
   about: 'Write the message in a zig-zag down and up across the rails, then read each rail in turn.',
   enc: function (s, k) { var t = CC.letters(s), R = +k.rails || 3, p = CC.railPattern(t.length, R), o = ''; for (var r = 0; r < R; r++) for (var i = 0; i < t.length; i++) if (p[i] === r) o += t[i]; return o; },
   dec: function (s, k) { var t = CC.letters(s), R = +k.rails || 3, p = CC.railPattern(t.length, R), o = [], j = 0; for (var r = 0; r < R; r++) for (var i = 0; i < t.length; i++) if (p[i] === r) o[i] = t[j++]; return o.join(''); },
-  vectors: [{ k: { rails: 5 }, p: 'LEAVE AREA IMMEDIATELY PROCEED NORTH AT ONCE', c: 'LATEAEEIAECEHTARMILODTOVAMDYRNRNEEEPOC', src: 'book' },
-            { k: { rails: 4 }, p: 'FUELSUPPLIESRUNNINGLOW', c: 'FPRGUUPSUNLESLENIOLINW', src: 'book' },
+  vectors: [{ k: { rails: 5 }, p: 'LEAVE AREA IMMEDIATELY PROCEED NORTH AT ONCE', c: 'LATEAEEIAECEHTARMILODTOVAMDYRNRNEEEPOC', src: 'classic worked example' },
+            { k: { rails: 4 }, p: 'FUELSUPPLIESRUNNINGLOW', c: 'FPRGUUPSUNLESLENIOLINW', src: 'classic worked example' },
             { k: { rails: 3 }, p: 'WEAREDISCOVEREDFLEEATONCE', c: 'WECRLTEERDSOEEFEAOCAIVDEN' }],
   sample: 'Leave area immediately proceed north at once'
 });
@@ -67,7 +67,7 @@ CC.routeOrder = function (rows, cols, route) {
 };
 CC.reg({ id: 'route', ch: 4, name: 'Route cipher', kind: 'cipher', object: 'grid',
   keys: [{ id: 'cols', label: 'Columns', type: 'number', def: 7, min: 2, max: 20 },
-         { id: 'route', label: 'Route', type: 'select', def: 'book', options: [['book', 'Book\'s route: down column 1, up column 2, then rows back and forth from the top right'], ['spiral', 'Clockwise spiral from the top left'], ['snake', 'Down and up the columns'], ['diag', 'Diagonals from the top left']] },
+         { id: 'route', label: 'Route', type: 'select', def: 'book', options: [['book', 'Classic route: down column 1, up column 2, then rows back and forth from the top right'], ['spiral', 'Clockwise spiral from the top left'], ['snake', 'Down and up the columns'], ['diag', 'Diagonals from the top left']] },
          { id: 'pad', label: 'Empty cells', type: 'select', def: 'random', options: [['x', 'Fill with X'], ['random', 'Fill with random letters']] }],
   about: 'Write the message in rows, then read it out along an agreed path through the grid.',
   enc: function (s, k) { var t = CC.letters(s), C = +k.cols || 7, R = Math.ceil(t.length / C); t += padChars(R * C - t.length, k.pad || 'random'); return CC.routeOrder(R, C, k.route).map(function (p) { return t[p[0] * C + p[1]]; }).join(''); },
@@ -93,7 +93,7 @@ CC.reg({ id: 'columnar', ch: 4, name: 'Columnar transposition', kind: 'cipher', 
   about: 'Write the message in rows under a keyword, sort the columns into the keyword\'s alphabetical order, then read down each column.',
   enc: function (s, k) { return CC.columnarEnc(CC.letters(s), CC.letters(k.key) || 'KEY', k.pad); },
   dec: function (s, k) { return CC.columnarDec(CC.letters(s), CC.letters(k.key) || 'KEY'); },
-  vectors: [{ k: { key: 'RELIANT', pad: 'blank' }, p: 'INCREASE ALERT LEVEL AS ENEMY ATTACK IMMINENT', c: 'ERAAMNAVECERELYITCLEMKNATSTMIEENANSLETI', src: 'book' },
+  vectors: [{ k: { key: 'RELIANT', pad: 'blank' }, p: 'INCREASE ALERT LEVEL AS ENEMY ATTACK IMMINENT', c: 'ERAAMNAVECERELYITCLEMKNATSTMIEENANSLETI', src: 'classic worked example' },
             { k: { key: 'ZEBRAS', pad: 'blank' }, p: 'WEAREDISCOVEREDFLEEATONCE', c: 'EVLNACDTESEAROFODEECWIREE' }],
   sample: 'Increase alert level as enemy attack imminent'
 });
@@ -117,7 +117,7 @@ CC.reg({ id: 'myszkowski', ch: 4, name: 'Myszkowski transposition', kind: 'ciphe
   },
   enc: function (s, k) { var key = CC.letters(k.key) || 'KEY', t = CC.letters(s), C = key.length; t += padChars(Math.ceil(t.length / C) * C - t.length, k.pad); return this.plan(t.length, key).map(function (i) { return t[i]; }).join(''); },
   dec: function (s, k) { var key = CC.letters(k.key) || 'KEY', t = CC.letters(s), g = []; this.plan(t.length, key).forEach(function (i, j) { g[i] = t[j]; }); return g.join(''); },
-  vectors: [{ k: { key: 'ATHLETE', pad: 'blank' }, p: 'INCREASE ALERT LEVEL AS ENEMY ATTACK IMMINENT', c: 'IEENANESRLAEATMICLEMKNRELYITNAATVSETCME', src: 'book' }],
+  vectors: [{ k: { key: 'ATHLETE', pad: 'blank' }, p: 'INCREASE ALERT LEVEL AS ENEMY ATTACK IMMINENT', c: 'IEENANESRLAEATMICLEMKNRELYITNAATVSETCME', src: 'classic worked example' }],
   sample: 'Increase alert level as enemy attack imminent'
 });
 /* Disrupted: fill row by row, jumping to a new row after any letter that is in the keyword; when the bottom is reached,
@@ -171,10 +171,10 @@ CC.reg({ id: 'disrupted', ch: 4, name: 'Disrupted transposition', kind: 'cipher'
   dec: function (s, k) {
     var key = CC.letters(k.key) || 'KEY', t = CC.letters(s), r = CC.disruptSolve(t, key);
     if (!r) throw new Error('This ciphertext cannot be undone with this keyword.');
-    this.lastNote = r.count > 1 ? 'With this keyword ' + r.count + ' different messages give exactly the same ciphertext (the book\'s rule can be ambiguous); the one that reads most like English is shown.' : '';
+    this.lastNote = r.count > 1 ? 'With this keyword ' + r.count + ' different messages give exactly the same ciphertext (the rule can be ambiguous); the one that reads most like English is shown.' : '';
     return r.text;
   },
-  vectors: [{ k: { key: 'ALIMONY' }, p: 'INCREASE ALERT LEVEL AS ENEMY ATTACK IMMINENT', c: 'INCSLEVNEAITEEREMREEACNLAYTINLMTKESAAMT', src: 'book' }],
+  vectors: [{ k: { key: 'ALIMONY' }, p: 'INCREASE ALERT LEVEL AS ENEMY ATTACK IMMINENT', c: 'INCSLEVNEAITEEREMREEACNLAYTINLMTKESAAMT', src: 'classic worked example' }],
   sample: 'Increase alert level as enemy attack imminent'
 });
 
@@ -220,7 +220,7 @@ CC.fleissnerOrder = function (N, holes) {
 };
 CC.reg({ id: 'fleissner', ch: 4, name: 'Fleissner turning grille', kind: 'cipher', object: 'turning',
   keys: [{ id: 'size', label: 'Grille size (even)', type: 'number', def: 6, min: 4, max: 10, step: 2 }, { id: 'key', label: 'Grille key (picks the holes)', type: 'text', def: 'SANDORF' },
-         { id: 'read', label: 'Read the grid', type: 'select', def: 'col', options: [['col', 'Column by column (as in the book)'], ['row', 'Row by row']] }, { id: 'pad', label: 'Empty cells', type: 'select', def: 'random', options: [['x', 'Fill with X'], ['random', 'Fill with random letters']] }],
+         { id: 'read', label: 'Read the grid', type: 'select', def: 'col', options: [['col', 'Column by column (classic layout)'], ['row', 'Row by row']] }, { id: 'pad', label: 'Empty cells', type: 'select', def: 'random', options: [['x', 'Fill with X'], ['random', 'Fill with random letters']] }],
   about: 'A square card with holes is turned a quarter at a time; each turn opens fresh squares until every square has been used exactly once.',
   enc: function (s, k) {
     var N = (+k.size || 6) & ~1, t = CC.letters(s), ord = CC.fleissnerOrder(N, CC.fleissnerHoles(N, k.key)), out = '';
@@ -266,7 +266,7 @@ CC.reg({ id: 'crossword', ch: 4, name: 'Crossword cipher', kind: 'cipher', objec
 });
 
 /* =====================================================================
-   Chapter 5 - fractionation
+   Section 5 - fractionation
    ===================================================================== */
 CC.reg({ id: 'bifid', ch: 5, name: 'Bifid', kind: 'cipher', object: 'bifid',
   keys: [{ id: 'key', label: 'Square keyword or full 25-letter square', type: 'text', def: 'AQUXZFBRVYKGCSWNLHDTPOMIE' }, { id: 'period', label: 'Block length (0 = whole message)', type: 'number', def: 0, min: 0, max: 50 }],
@@ -289,7 +289,7 @@ CC.reg({ id: 'bifid', ch: 5, name: 'Bifid', kind: 'cipher', object: 'bifid',
     }
     return o;
   },
-  vectors: [{ k: { key: 'AQUXZFBRVYKGCSWNLHDTPOMIE', period: 0 }, p: 'SUPPLY DROP AT MIDNIGHT', c: 'KELLEXEDMDHAYHFZSNLW', src: 'book' }],
+  vectors: [{ k: { key: 'AQUXZFBRVYKGCSWNLHDTPOMIE', period: 0 }, p: 'SUPPLY DROP AT MIDNIGHT', c: 'KELLEXEDMDHAYHFZSNLW', src: 'classic worked example' }],
   sample: 'Supply drop at midnight'
 });
 CC.trifidKey = function (key) { return CC.keyAlpha(key, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ+'); };
@@ -314,12 +314,12 @@ CC.reg({ id: 'trifid', ch: 5, name: 'Trifid', kind: 'cipher', object: 'trifid',
     }
     return o;
   },
-  vectors: [{ k: { key: 'MY SECRET TRIFID KEY', period: 5 }, p: 'REINFORCEMENTS NEEDED URGENTLY', c: 'MKNXNOMGSDECXQFYCKMMPCGQAEXC', src: 'book' }],
+  vectors: [{ k: { key: 'MY SECRET TRIFID KEY', period: 5 }, p: 'REINFORCEMENTS NEEDED URGENTLY', c: 'MKNXNOMGSDECXQFYCKMMPCGQAEXC', src: 'classic worked example' }],
   sample: 'Reinforcements needed urgently'
 });
 
 /* =====================================================================
-   Chapter 6 - polygraphic
+   Section 6 - polygraphic
    ===================================================================== */
 CC.bigrams = function (s, opt) {
   var t = CC.letters(s).replace(/J/g, 'I'), out = [], filler = (opt && opt.filler) || 'X';
@@ -336,7 +336,7 @@ CC.bigrams = function (s, opt) {
 };
 CC.reg({ id: 'playfair', ch: 6, name: 'Playfair', kind: 'cipher', object: 'playfair',
   keys: [{ id: 'key', label: 'Keyword', type: 'text', def: 'SECRET' }, { id: 'filler', label: 'Filler letter', type: 'text', def: 'X' },
-         { id: 'doubles', label: 'Double letters', type: 'select', def: 'standard', options: [['standard', 'Put X between them (FLEE: FL EX EN ...)'], ['book', 'Pad each one (FLEE: FL EX EX ..., as in the book\'s example)']] }],
+         { id: 'doubles', label: 'Double letters', type: 'select', def: 'standard', options: [['standard', 'Put X between them (FLEE: FL EX EN ...)'], ['book', 'Pad each one (FLEE: FL EX EX ..., as in the classic example)']] }],
   about: 'Pairs of letters on a 5 x 5 square. Same row: take the letters to the right. Same column: take the letters below. Otherwise: the other two corners of their rectangle.',
   pair: function (sq, p, dir) {
     var a = sq.indexOf(p[0]), b = sq.indexOf(p[1]), ra = Math.floor(a / 5), ca = a % 5, rb = Math.floor(b / 5), cb = b % 5;
@@ -346,7 +346,7 @@ CC.reg({ id: 'playfair', ch: 6, name: 'Playfair', kind: 'cipher', object: 'playf
   },
   enc: function (s, k) { var sq = CC.square(k.key, 5), self = this; return CC.bigrams(s, { splitDoubles: k.doubles === 'book' ? 'both' : true, filler: CC.letters(k.filler || 'X')[0] || 'X' }).map(function (p) { return self.pair(sq, p, 1); }).join(''); },
   dec: function (s, k) { var sq = CC.square(k.key, 5), self = this; return CC.bigrams(s).map(function (p) { return self.pair(sq, p, -1); }).join(''); },
-  vectors: [{ k: { key: 'SECRET', doubles: 'book' }, p: 'UNSAFE FLEE NOW', c: 'NOAHBRLQCWCWOPXY', src: 'book' },
+  vectors: [{ k: { key: 'SECRET', doubles: 'book' }, p: 'UNSAFE FLEE NOW', c: 'NOAHBRLQCWCWOPXY', src: 'classic worked example' },
             { k: { key: 'PLAYFAIR EXAMPLE' }, p: 'HIDE THE GOLD IN THE TREE STUMP', c: 'BMODZBXDNABEKUDMUIXMMOUVIF' }],
   sample: 'Unsafe flee now'
 });
@@ -358,18 +358,18 @@ CC.reg({ id: 'twosquare', ch: 6, name: 'Two-square (double Playfair)', kind: 'ci
     var a = (dec && !v ? B : A).indexOf(p[0]), b = (dec && !v ? A : B).indexOf(p[1]);
     var r1 = Math.floor(a / 5), c1 = a % 5, r2 = Math.floor(b / 5), c2 = b % 5;
     if (!v) return dec ? A[r1 * 5 + c2] + B[r2 * 5 + c1] : B[r1 * 5 + c2] + A[r2 * 5 + c1];
-    if (c1 === c2) return p[0] + p[1];   /* standard rule: same column, pair unchanged (the book swaps them, which cannot always be undone) */
+    if (c1 === c2) return p[0] + p[1];   /* standard rule: same column, pair unchanged (the commonly printed example swaps them, which cannot always be undone) */
     return A[r1 * 5 + c2] + B[r2 * 5 + c1];
   },
   enc: function (s, k) { var A = CC.square(k.key, 5), B = CC.square(k.key2, 5), v = k.layout === 'v', self = this; return CC.bigrams(s).map(function (p) { return self.pair(A, B, p, v, false); }).join(''); },
   dec: function (s, k) { var A = CC.square(k.key, 5), B = CC.square(k.key2, 5), v = k.layout === 'v', self = this; return CC.bigrams(s).map(function (p) { return self.pair(A, B, p, v, true); }).join(''); },
-  vectors: [{ k: { key: 'SECRET', key2: 'CRYPTOGRAM', layout: 'h' }, p: 'UNSAFE FLEE NOW', c: 'NUYAGLGQRJKAXW', src: 'book' },
-            { k: { key: 'SECRET', key2: 'CRYPTOGRAM', layout: 'v' }, p: 'UNSAFE FLEE NOW', c: 'PSCOBHBQEENOYV', src: 'book (the book prints ON where the standard rule leaves NO)' }],
+  vectors: [{ k: { key: 'SECRET', key2: 'CRYPTOGRAM', layout: 'h' }, p: 'UNSAFE FLEE NOW', c: 'NUYAGLGQRJKAXW', src: 'classic worked example' },
+            { k: { key: 'SECRET', key2: 'CRYPTOGRAM', layout: 'v' }, p: 'UNSAFE FLEE NOW', c: 'PSCOBHBQEENOYV', src: 'classic worked example (printed with ON where the standard rule leaves NO)' }],
   sample: 'Unsafe flee now'
 });
 CC.reg({ id: 'foursquare', ch: 6, name: 'Four-square', kind: 'cipher', object: 'foursquare',
   keys: [{ id: 'key', label: 'Top-right square keyword', type: 'text', def: 'SECRET' }, { id: 'key2', label: 'Bottom-left square keyword', type: 'text', def: 'CRYPTOGRAM' }],
-  about: 'Plain squares top-left and bottom-right, keyed squares top-right and bottom-left. Find the pair in the plain squares and read the other corners from the keyed squares. (The book\'s worked example goes the other way round: its "LANDING AT DAWN" result is what this studio\'s Decipher button gives.)',
+  about: 'Plain squares top-left and bottom-right, keyed squares top-right and bottom-left. Find the pair in the plain squares and read the other corners from the keyed squares. (The commonly printed worked example goes the other way round: its "LANDING AT DAWN" result is what this studio\'s Decipher button gives.)',
   enc: function (s, k) {
     var P = CC.square('', 5), A = CC.square(k.key, 5), B = CC.square(k.key2, 5);
     return CC.bigrams(s).map(function (p) { var a = P.indexOf(p[0]), b = P.indexOf(p[1]); return A[Math.floor(a / 5) * 5 + b % 5] + B[Math.floor(b / 5) * 5 + a % 5]; }).join('');
@@ -378,7 +378,7 @@ CC.reg({ id: 'foursquare', ch: 6, name: 'Four-square', kind: 'cipher', object: '
     var P = CC.square('', 5), A = CC.square(k.key, 5), B = CC.square(k.key2, 5);
     return CC.bigrams(s).map(function (p) { var a = A.indexOf(p[0]), b = B.indexOf(p[1]); return P[Math.floor(a / 5) * 5 + b % 5] + P[Math.floor(b / 5) * 5 + a % 5]; }).join('');
   },
-  vectors: [{ k: { key: 'SECRET', key2: 'CRYPTOGRAM' }, dir: 'dec', p: 'NIQLNRHKAPHVTV', c: 'LANDINGATDAWNX', src: 'book (worked in the opposite direction)' }],
+  vectors: [{ k: { key: 'SECRET', key2: 'CRYPTOGRAM' }, dir: 'dec', p: 'NIQLNRHKAPHVTV', c: 'LANDINGATDAWNX', src: 'classic worked example (worked in the opposite direction)' }],
   sample: 'Landing at dawn'
 });
 
