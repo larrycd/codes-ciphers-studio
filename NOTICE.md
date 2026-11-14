@@ -2,8 +2,8 @@
 
 Codes & Ciphers Studio is by Larry Dalton.
 
-- The studio follows the chapter structure of Sunil Tanna, *Codes, Ciphers, Steganography & Secret Messages*
-  (Answers 2000 Limited, 2020). No text or images from the book are included; explanations and drawings are original.
+- Explanations, drawings and working models are original to the studio. Where a cipher is checked against a published
+  example, the source is named beside it on the Self-test page and below.
 - Beale cipher no. 2, its accepted solution and the Declaration of Independence as transcribed by John Burkardt
   (people.math.sc.edu/burkardt/datasets/beale_cipher), distributed under the GNU LGPL. The underlying historical texts are in the public domain.
 - `src/app/data/quadgrams.json`: four-letter group frequencies counted from Shakespeare's plays (public domain,

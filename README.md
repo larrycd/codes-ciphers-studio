@@ -2,10 +2,12 @@
 
 **by Larry Dalton**
 
-100 working codes, ciphers and ways of hiding a message, following the chapters of Sunil Tanna's
-*Codes, Ciphers, Steganography & Secret Messages*, plus chapters of cipher wheels and devices, spy ciphers and cipher
-machines, and the stream ciphers in your phone, Wi-Fi and travel card. Everything runs on your own Windows computer at
-`http://localhost:8771/`; nothing you type leaves the machine.
+The most renowned codes, ciphers, secret messages and ways of hiding a message (steganography), 100 of them, each
+working and most with a model you can watch, arranged in 16 sections. They span three thousand years: the Spartan
+scytale, Caesar and the Kama Sutra; the Renaissance ciphers of Alberti, della Porta and Vigenère; the Civil War disks and
+Jefferson's wheel; Enigma, Lorenz, PURPLE and SIGABA; the spy ciphers of the Cold War; and the stream ciphers in your
+phone, Wi-Fi and travel card. Everything runs on your own Windows computer at `http://localhost:8771/`; nothing you
+type leaves the machine.
 
 ![Codes & Ciphers Studio](infographics/Codes-Ciphers-Studio-How-It-Works.png)
 
@@ -35,7 +37,7 @@ machines, and the stream ciphers in your phone, Wi-Fi and travel card. Everythin
 - **Enigma slide cipher**, **Confederate Army cipher disk** (Manchester Bluff, Complete Victory, Come Retribution), **Chaocipher** (two stirred wheels) and **Solitaire** (a pack of cards you can watch shuffle)
 - **Alphabet wheels**: Braille, runes, Elvish (Tolkien's Tengwar), Pharaoh's hieroglyphs, Ogham and Theban
 - **Heath's deciphering dice**: Royal V. Heath's 1927 lightning-addition trick, with dice you can roll
-- **ADFGVX / ADFGX** (German Army, 1918) and the **Hill cipher** (1929) join chapters 5 and 6
+- **ADFGVX / ADFGX** (German Army, 1918) and the **Hill cipher** (1929) join sections 5 and 6
 
 ## New in 1.3: the hundred
 
@@ -67,9 +69,9 @@ machines, and the stream ciphers in your phone, Wi-Fi and travel card. Everythin
 - **Affine cipher** and **Diffie-Hellman key exchange** (with the paint-mixing picture)
 - **Kryptos panel K1** deciphered live on the Famous page
 
-## Chapters covered
+## Sections
 
-| Chapter | In the studio |
+| Section | In the studio |
 |---|---|
 | 1 Communication codes | Signal flags, semaphore, Polybius square, tap code, Chappe, Cooke & Wheatstone, Morse, Baudot (1888 patent table), ITA2, ASCII/hex/Base64 |
 | 2 Caesar ciphers | Caesar, ROT13, ROT5, ROT18, ROT47, Avgad, Albam, affine |
@@ -94,8 +96,12 @@ RSA-129 "The Magic Words are Squeamish Ossifrage" message unlocked with the 1994
 
 ## Checked, not just drawn
 
-The Self-test page runs 171 checks: the book's worked examples (10 reproduced exactly; 2 differ from the book
-for documented reasons), standard published test messages, the 1941 Operation Barbarossa Enigma message,
+Every one of the 100 codes and ciphers is tested: 265 engine checks (classic worked examples, standard published test
+messages and a round trip through every cipher), 31,088 round trips through every cipher, key option and group size, and
+944 checks in a real browser, all passing.
+
+The Self-test page in the app runs 171 of these checks so you can watch them pass: classic worked examples (10
+reproduced exactly; 2 differ for documented reasons), standard published test messages, the 1941 Operation Barbarossa Enigma message,
 Enigma's double step, round trips through every cipher, AES, RSA, signatures and picture hiding, and (new in 1.1)
 the published test messages for ADFGVX, Hill, Chaocipher and Solitaire, dCode's Mexican Army example and Heath's rule
 for all 7,776 rolls of the dice; and (1.2) part 1 of the 1941 PURPLE message, the A5/1 reference frame, eSTREAM vectors for
@@ -112,8 +118,8 @@ mostly a test word typed where hexadecimal digits are needed, or a message too l
 browser through the buttons, plays every step of every working model and checks the page fits the window (944 checks);
 `node test/play-matches.js` and `node test/tabula.js` check that what each model highlights agrees with the result.
 
-Honest notes: where the book's own example breaks the standard rule (Autokey, vertical Two-square,
-Four-square direction) the studio follows the rule and says so. Chappe's letter-to-position table and the
+Honest notes: where a commonly printed worked example breaks the standard rule (Autokey, vertical Two-square,
+Four-square direction), the studio follows the rule and says so. Chappe's letter-to-position table and the
 M-209 and Lorenz pin settings are examples made for the studio. The Janelle cipher, Enigma slide and Heath's dice are
 wooden products by Creative Crafthouse: the slide's method is the studio's reading of it (the maker keeps the instructions in
 the box) and the dice faces are the studio's own, built on Heath's rule. The script wheels give each English letter one sign,
