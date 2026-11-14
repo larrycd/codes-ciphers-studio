@@ -1,0 +1,10 @@
+CC Theban (fonts/CCTheban.otf)
+
+The 23 Theban letter outlines come from the "Theban glyph A.svg" ... "Theban glyph Z.svg" files on
+Wikimedia Commons (category: Theban alphabet), drawn by User:Fuzzypeg and released into the public domain.
+The Theban alphabet itself was first printed by Johannes Trithemius (Polygraphia, 1518) and by
+Heinrich Cornelius Agrippa (De occulta philosophia, 1533).
+
+The outlines were scaled and assembled into a font for Codes & Ciphers Studio by Larry Dalton.
+Theban has no place in Unicode, so the letters sit at U+E100 to U+E116 (Private Use Area), in the order
+A B C D E F G H I K L M N O P Q R S T V X Y Z.
