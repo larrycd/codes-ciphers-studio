@@ -25,3 +25,13 @@ Added in version 1.1:
   test vectors), Mexican Army wheel (dCode).
 - The Janelle cipher, Enigma slide cipher and the modern Heath's deciphering dice are products of Creative Crafthouse;
   the studio describes how such devices work and draws its own models. No product artwork is copied.
+
+Added in version 1.2:
+
+- PURPLE switch wiring and part 1 of the 14-part message of 7 December 1941 (`src/app/data/purple14.json`): from
+  W. Freeman, G. Sullivan and F. Weierud, "PURPLE Revealed: Simulation and Computer-aided Cryptanalysis of Angooki Taipu B",
+  Cryptologia 27:1 (2003), as transcribed in Brian Neal's `purple` simulator (MIT licence, Copyright (c) 2013-2014 Brian Neal).
+- A5/1 test frame: Briceno, Goldberg and Wagner's 1999 reference implementation. Salsa20 and Trivium: eSTREAM test vectors.
+  RC4, straddling checkerboard, affine, Diffie-Hellman and the VIC key lines: the examples on Wikipedia.
+- Crypto-1 was checked during development against the Proxmark3 crapto1 library (GPL); none of its code is included.
+- SIGABA follows the mechanism described by Stamp and Chan; its rotor wirings are examples made for the studio.
